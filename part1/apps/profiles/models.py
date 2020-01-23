@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.translation import ugettext_lazy as _
 import pytz
 
 
@@ -24,10 +25,12 @@ class UserPreference(models.Model):
     # Preferred timezone is not using django-timezone-field library (not
     # allowed in test scenario) but in prod I would have used it.
     _preferred_timezone = models.CharField(
+        verbose_name=_("Preferred timezone"),
         max_length=255,
         default='Europe/Paris',
         # source: https://stackoverflow.com/a/45867250 --> create pytz choices
         choices=tuple(zip(pytz.all_timezones, pytz.all_timezones)),
+        help_text=_("Affects dates & times displayed on the app.")
     )
 
     @property
