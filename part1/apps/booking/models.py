@@ -8,7 +8,7 @@ class BookingQueryset(models.QuerySet):
         if user.is_staff:
             return self.filter(**kwargs)
         else:
-            return self.filter(owner=user, **kwargs)
+            return self.filter(owner_id=user.id, **kwargs)
 
 
 class Booking(models.Model):

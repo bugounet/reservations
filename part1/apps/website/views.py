@@ -8,11 +8,8 @@ from apps.booking.models import Booking
 from apps.resources.models import Resource
 
 
-def get_bookings(user_id, is_admin=False):
-    if is_admin:
-        return Booking.objects.all()
-    else:
-        return Booking.objects.filter(owner_id=user_id)
+def get_bookings(user):
+    return Booking.objects.for_user(user)
 
 
 def get_resources():
@@ -21,10 +18,15 @@ def get_resources():
 
 @login_required
 def index_view(request):
+    """ Index view. This is reserved to authenticated users. Others are
+    redirected to login screen.
+
+    Index displays bookings and existing resources.
+    """
     user = request.user
     return render(request, "website/index.html", {
         'user': user,
-        'bookings': get_bookings(user.id, is_admin=user.is_staff),
+        'bookings': get_bookings(user),
         'resources': get_resources(),
     })
 
