@@ -1,0 +1,33 @@
+{% extends "website/base.html" %}
+
+{% block content %}
+
+<h1>Reservations</h1>
+<p>Hello {{user.username}}. Here you will be able to find the resources you
+    want to book and the ones you already booked.</p>
+
+<div>
+    <h2>Upcoming and ongoing reservations</h2>
+    <ul>
+        {% for booking in bookings %}
+            <li>
+                {{booking.start_datetime}} - {{booking.end_datetime}}:
+                {{booking.title}} <button>Cancel</button>
+            </li>
+
+        {% endfor %}
+    </ul>
+</div>
+
+<div>
+    <h2>Available resources</h2>
+    <ul>
+        {% for resource in resources%}
+            <li>
+                [{{resource.type}}]{{resource.label}} <button>Book me!</button>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock %}
