@@ -1,0 +1,19 @@
+[
+{
+    "model": "auth.user",
+    "fields": {
+        "password": "pbkdf2_sha256$150000$5rgVJ0Unq9Tx$odHwAIzVKdgQ0OTlb2eZvwscG8lJqo3hniKh+Xr77oY=",
+        "last_login": null,
+        "is_superuser": true,
+        "username": "admin",
+        "first_name": "Booking",
+        "last_name": "Admin",
+        "email": "no_reply@email.com",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2020-01-23T20:40:40.080Z",
+        "groups": [],
+        "user_permissions": []
+    }
+}
+]

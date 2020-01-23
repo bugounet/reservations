@@ -9,7 +9,10 @@ following commands:
 virtualenv -p python3.6 env
 source env/bin/activate
 pip install -r requirements.txt
+export DEBUG=false
 python manage.py migrate
+python manage.py collectstatic --noinput
+python manage.py loaddata fixtures/superusers.json
 ```
 
 ## Features
@@ -34,3 +37,10 @@ The following diagram sums thigs up:
 ## Foreseen limitations
 This project doesn't have resources over-use protection and probably won't
 unless explicitly requested.
+
+## Using the app
+You can connect the app admin interface using the following credentials:
+
+| username | password    |
+|----------|-------------|
+| admin    | MyAdmin123! |
