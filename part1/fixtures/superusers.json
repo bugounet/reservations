@@ -15,5 +15,15 @@
         "groups": [],
         "user_permissions": []
     }
+},
+{
+    "model": "profiles.userpreference",
+    "pk": 1,
+    "fields": {
+        "user": [
+            "admin"
+        ],
+        "_preferred_timezone": "Europe/Paris"
+    }
 }
 ]
