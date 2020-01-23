@@ -2,7 +2,15 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
-# Create your models here.
+class BookingQueryset(models.QuerySet):
+    def for_user(self, user, **kwargs):
+        kwargs.pop('owner', None)
+        if user.is_staff:
+            return self.filter(**kwargs)
+        else:
+            return self.filter(owner=user, **kwargs)
+
+
 class Booking(models.Model):
     """ Booking: Resources reservations and rooms bookings.
 
@@ -10,6 +18,8 @@ class Booking(models.Model):
     Booking dates (start + end) are mandatory in order to restrict resources
     allocations in time. For recurring needs, create multiple bookings.
     """
+
+    objects = BookingQueryset.as_manager()
 
     owner = models.ForeignKey(
         to='auth.User',
