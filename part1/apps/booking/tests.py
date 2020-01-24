@@ -5,6 +5,7 @@ from unittest.mock import Mock
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.test import TestCase
+from django.urls import reverse
 from django.utils.timezone import now as tznow
 
 from apps.booking.business_logics import MetaInfos
@@ -202,3 +203,73 @@ class BookingFormTestCase(BookingSetupMixin, TestCase):
 
         with self.assertRaises(ValidationError):
             form.clean()
+
+class ViewsTestCase(BookingSetupMixin, TestCase):
+    room = None
+    user_1 = None
+    user_2 = None
+    user_admin = None
+
+    @classmethod
+    def setUpClass(cls):
+        cls.room = cls.create_room_resource()
+        cls.user_1 = cls.create_user("1")
+        cls.user_2 = cls.create_user("2")
+        cls.user_admin = cls.create_user("admin", admin=True)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.room.delete()
+        cls.user_1.delete()
+        cls.user_2.delete()
+        cls.user_admin.delete()
+
+    def test_display_owner_bookings(self):
+        # assuming I'm logged in as booking owner
+        booking = self.create_booking(self.user_1)
+        self.client._login(booking.owner)
+
+        # then when I access the booking details
+        response = self.client.get(
+            reverse('booking_details', kwargs={'pk': booking.pk})
+        )
+
+        # I succeed
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, booking.title)
+        self.assertQuerysetEqual(
+            Booking.objects.filter(pk=response.context['booking'].pk),
+            [repr(booking)]
+        )
+
+    def test_display_neighbourg_booking_fails_on_40(self):
+        # assuming I'm not logged in as booking owner but someone else
+        booking = self.create_booking(self.user_1)
+        self.client._login(self.user_2)
+
+        # then when I access the booking details
+        response = self.client.get(
+            reverse('booking_details', kwargs={'pk': booking.pk})
+        )
+
+        # I fail and no data is in contextdump
+        self.assertEqual(response.status_code, 404)
+        self.assertIsNone(response.context.get('booking'))
+
+    def test_display_others_booking_succeeds_as_admin(self):
+        # assuming I'm logged in as admin
+        booking = self.create_booking(self.user_1)
+        self.client._login(self.user_admin)
+
+        # then when I access the booking details
+        response = self.client.get(
+            reverse('booking_details', kwargs={'pk': booking.pk})
+        )
+
+        # I succeed
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, booking.title)
+        self.assertQuerysetEqual(
+            Booking.objects.filter(pk=response.context['booking'].pk),
+            [repr(booking)]
+        )
