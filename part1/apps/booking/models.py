@@ -1,23 +1,8 @@
 from django.db import models
-from django.utils.timezone import now as tznow
 from django.utils.translation import ugettext_lazy as _
 
+from .queryset import BookingQueryset
 from .business_logics import MetaInfos
-
-
-class BookingQueryset(models.QuerySet):
-    def for_user(self, user, **kwargs):
-        kwargs.pop('owner', None)
-        if user.is_staff:
-            return self.filter(**kwargs)
-        else:
-            return self.filter(owner_id=user.id, **kwargs)
-
-    def past(self):
-        return self.filter(end_datetime__lte=tznow())
-
-    def upcoming_and_current(self):
-        return self.filter(end_datetime__gte=tznow())
 
 
 class Booking(models.Model):

@@ -6,9 +6,11 @@ class MetaInfos():
         self.booking = booking
 
     def is_over(self):
+        """ Is the booking end passed """
         return (self.booking.end_datetime < tznow())
 
     def is_ongoing(self):
+        """ Is the booking started and not ended yet."""
         return (
             self.booking.start_datetime <= tznow() < self.booking.end_datetime
         )

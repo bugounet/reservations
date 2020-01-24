@@ -23,14 +23,14 @@ class BookingSetupMixin():
         User = get_user_model()
         return User.objects.create(username=name, is_staff=admin)
 
-    def create_booking(self, user):
+    def create_booking(self, user, start=None, end=None):
         random_start = tznow() + timedelta(minutes=randint(100, 1000))
-        end = random_start + timedelta(minutes=5)
+        random_end = random_start + timedelta(minutes=5)
         return Booking.objects.create(
             resource=self.room,
             owner=user,
-            start_datetime=random_start,
-            end_datetime=end
+            start_datetime=start or random_start,
+            end_datetime=end or random_end
         )
 
 class BookingCascadeRemovalTestCase(TestCase):
@@ -272,4 +272,147 @@ class ViewsTestCase(BookingSetupMixin, TestCase):
         self.assertQuerysetEqual(
             Booking.objects.filter(pk=response.context['booking'].pk),
             [repr(booking)]
+        )
+
+class QuerySetTestCase(BookingSetupMixin, TestCase):
+    room = None
+    user_1 = None
+    user_2 = None
+    user_admin = None
+
+    @classmethod
+    def setUpClass(cls):
+        cls.room = cls.create_room_resource()
+        cls.user_1 = cls.create_user("1")
+        cls.user_2 = cls.create_user("2")
+        cls.user_admin = cls.create_user("admin", admin=True)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.room.delete()
+        cls.user_1.delete()
+        cls.user_2.delete()
+        cls.user_admin.delete()
+
+    def test_past_bookings(self):
+        tested_booking = self.create_booking(
+            self.user_1,
+            start=tznow()-timedelta(minutes=30),
+            end=tznow()-timedelta(minutes=60)
+        )
+
+        self.assertEqual(Booking.objects.past().first(), tested_booking)
+
+    def test_upcoming_bookings(self):
+        tested_booking = self.create_booking(
+            self.user_1,
+            start=tznow()+timedelta(minutes=30),
+            end=tznow()+timedelta(minutes=60)
+        )
+
+        self.assertEqual(
+            Booking.objects.upcoming_and_current().first(),
+            tested_booking
+        )
+
+    def test_current_bookings(self):
+        tested_booking = self.create_booking(
+            self.user_1,
+            start=tznow()-timedelta(minutes=30),
+            end=tznow()+timedelta(minutes=60)
+        )
+
+        self.assertEqual(
+            Booking.objects.upcoming_and_current().first(),
+            tested_booking
+        )
+
+    def test_get_overlapping_left_bookings(self):
+        tested_booking = self.create_booking(
+            self.user_1,
+            start=tznow()+timedelta(minutes=30),
+            end=tznow()+timedelta(minutes=60)
+        )
+
+        self.assertEqual(
+            Booking.objects.overlapping_bookings(
+                start=tznow()+timedelta(minutes=15),
+                end=tznow()+timedelta(minutes=45)
+            ).first(),
+            tested_booking
+        )
+
+    def test_get_overlapping_right_bookings(self):
+        tested_booking = self.create_booking(
+            self.user_1,
+            start=tznow()+timedelta(minutes=30),
+            end=tznow()+timedelta(minutes=60)
+        )
+
+        self.assertEqual(
+            Booking.objects.overlapping_bookings(
+                start=tznow() + timedelta(minutes=45),
+                end=tznow() + timedelta(minutes=75)
+            ).first(),
+            tested_booking
+        )
+
+    def test_get_overlapping_middle_bookings(self):
+        tested_booking = self.create_booking(
+            self.user_1,
+            start=tznow()+timedelta(minutes=30),
+            end=tznow()+timedelta(minutes=60)
+        )
+
+        self.assertEqual(
+            Booking.objects.overlapping_bookings(
+                start=tznow() + timedelta(minutes=35),
+                end=tznow() + timedelta(minutes=55)
+            ).first(),
+            tested_booking
+        )
+
+    def test_get_overlapping_bigger_bookings(self):
+        tested_booking = self.create_booking(
+            self.user_1,
+            start=tznow()+timedelta(minutes=30),
+            end=tznow()+timedelta(minutes=60)
+        )
+
+        self.assertEqual(
+            Booking.objects.overlapping_bookings(
+                start=tznow() + timedelta(minutes=15),
+                end=tznow() + timedelta(minutes=75)
+            ).first(),
+            tested_booking
+        )
+
+    def test_get_overlapping_none_left_bookings(self):
+        tested_booking = self.create_booking(
+            self.user_1,
+            start=tznow()+timedelta(minutes=30),
+            end=tznow()+timedelta(minutes=60)
+        )
+
+        self.assertEqual(
+            Booking.objects.overlapping_bookings(
+                start=tznow(),
+                end=tznow() + timedelta(minutes=15)
+            ).first(), None,
+            tested_booking
+        )
+
+    def test_get_overlapping_none_right_bookings(self):
+        tested_booking = self.create_booking(
+            self.user_1,
+            start=tznow()+timedelta(minutes=30),
+            end=tznow()+timedelta(minutes=60)
+        )
+
+        self.assertEqual(
+            Booking.objects.overlapping_bookings(
+                start=tznow() + timedelta(minutes=75),
+                end=tznow() + timedelta(minutes=90)
+            ).first(), None,
+            tested_booking
         )
