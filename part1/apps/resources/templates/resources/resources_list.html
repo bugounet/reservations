@@ -1,0 +1,24 @@
+{%extends "website/base.html" %}
+{% load i18n %}
+
+{%block content%}
+<h1>{% trans "Resources" %}</h1>
+<table>
+    <tr>
+        <th>{% trans "Label" %}</th>
+        <th>{% trans "Type" %}</th>
+        <th>{% trans "Capacity" %}</th>
+        <th>{% trans "Location" %}</th>
+    </tr>
+    {%for resource in object_list%}
+        {%include "resources/components/resource-listitem.html" with resource=resource%}
+    {%endfor%}
+</table>
+{% if request.user.is_staff %}
+<button class="btn btn-primary">
+    <a href="{% url 'create_resource_view' %}">
+        {% trans "Create resource" %}
+    </a>
+</button>
+{%endif %}
+{%endblock%}}

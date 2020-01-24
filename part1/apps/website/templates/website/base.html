@@ -14,7 +14,7 @@
     <nav>
         {% if user.is_staff %}
         <li class="site-nav-item">
-            <a href="{% url 'new_resource' %}">Add resources</a>
+            <a href="{% url 'resources_list' %}">Resources</a>
         </li>
         {% endif %}
         <li class="site-nav-item">

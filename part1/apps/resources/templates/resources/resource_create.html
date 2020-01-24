@@ -1,0 +1,11 @@
+{%extends "website/base.html" %}
+{% load i18n %}
+
+{%block content%}
+<h1>{% trans "Create resource" %}</h1>
+<form method="post">
+    {% csrf_token %}
+    {{form.as_p }}
+    <input type="submit" name="add" value='{% trans "Add" %}'/>
+</form>
+{%endblock%}}
