@@ -1,0 +1,20 @@
+<tr
+    class="{%if booking.meta_infos.is_over %}
+        past-event
+    {%elif booking.meta_infos.is_ongoing %}
+        current-event
+    {%else%}
+        upcoming-event
+    {%endif%}">
+    <td>
+        <a href="{% url 'booking_details' booking.id %}">
+            {{booking.title}}
+        </a>
+    </td>
+    <td>{{booking.start_datetime}}</td>
+    <td>{{booking.end_datetime}}</td>
+    <td>{{booking.resource.label}}</td>
+    {%if user and user.is_staff %}
+    <td>{{booking.owner}}</td>
+    {%endif%}
+</tr>
