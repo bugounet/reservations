@@ -19,12 +19,14 @@ class Booking(models.Model):
 
     owner = models.ForeignKey(
         to='auth.User',
+        related_name="bookings",
         verbose_name=_("User"),
         help_text=_("User owning this"),
         on_delete=models.CASCADE,
     )
     resource = models.ForeignKey(
         verbose_name=_("Resource"),
+        related_name="bookings",
         to='resources.Resource',
         on_delete=models.CASCADE,
         help_text=_("Booked resource.")

@@ -1,5 +1,5 @@
 from django.urls import reverse
-from django.views.generic import ListView
+from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -33,3 +33,7 @@ class ResourceCreationView(AdminLoginRequiredMixin, CreateView):
 
     def get_queryset(self):
         return Resource.objects.for_user(self.request.user)
+
+class ResourceDetailsView(LoginRequiredMixin, DetailView):
+    model = Resource
+    template_name = 'resources/resource_details.html'

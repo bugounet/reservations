@@ -1,0 +1,24 @@
+{%extends "website/base.html" %}
+{% load i18n %}
+
+{%block content%}
+<h1>{{resource.label}}</h1>
+<ul>
+    <li>{% trans "Type" %}: {{resource.type}}</li>
+    <li>{% trans "Capacity" %}: {{resource.capacity}}</li>
+    <li>{% trans "Location" %}: {{resource.location}}</li>
+</ul>
+<h1>{%trans "Bookings" %}</h1>
+<ul>
+    {% for booking in resource.upcoming_bookings %}
+    <li>
+        {% blocktrans with username=booking.owner.username start=booking.start_datetime|date:"SHORT_DATETIME_FORMAT" end=booking.end_datetime|date:"SHORT_DATETIME_FORMAT" title=booking.title%}
+Booked by {{username}} from {{start}} to {{end}}: {{title}}
+        {% endblocktrans %}
+    </li>
+    {% empty %}
+        {% trans "Not booked yet" %}
+    {% endfor %}
+</ul>
+
+{%endblock%}}

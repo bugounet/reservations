@@ -1,5 +1,9 @@
 <tr>
-    <td>{{resource.label}}</td>
+    <td>
+        <a href="{%url 'resource_details' resource.id %}">
+            {{resource.label}}
+        </a>
+    </td>
     <td>{{resource.type}}</td>
     <td>{{resource.capacity}}</td>
     <td>{{resource.location}}</td>

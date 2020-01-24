@@ -23,7 +23,10 @@ class Resource(models.Model):
 
     # Capacity: assuming it's the max number of people using the Resource at
     # a given time. If unset, this Resource isn't limited to X persons (like
-    # a very big screen)
+    # a very big screen). To ease this implementation, I consider the number
+    # of persons is equal to the number of bookings. I know one person
+    # could create two bookings on the same time-slot. But for a test,
+    # let's reduce complexity.
     capacity = models.PositiveSmallIntegerField(
         verbose_name=_("Capacity"),
         null=True,
@@ -50,3 +53,6 @@ class Resource(models.Model):
 
     def __str__(self):
         return f"{self.label}"
+
+    def upcoming_bookings(self):
+        return self.bookings.upcoming_and_current()
