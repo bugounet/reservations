@@ -3,8 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Reservations</title>
+    <style>
+        .two-columns-page {
+            display:flex;
+            flex-direction: row;
+        }
+        .half_screen {
+            width:50%;
+        }
+    </style>
 </head>
 <body>
+<header>
+    <nav>
+        <li>
+            <a href="{% url 'view_bookings' %}">Bookings</a>
+        </li>
+        <li>{{user.username}} (<a href="{% url 'logout' %}">logout</a>)</li>
+    </nav>
+</header>
 
 {% block content %}
 {% endblock %}

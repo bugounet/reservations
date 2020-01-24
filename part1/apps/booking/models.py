@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.timezone import now as tznow
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -9,6 +10,12 @@ class BookingQueryset(models.QuerySet):
             return self.filter(**kwargs)
         else:
             return self.filter(owner_id=user.id, **kwargs)
+
+    def past(self):
+        return self.filter(end_datetime__lte=tznow())
+
+    def upcoming_and_current(self):
+        return self.filter(end_datetime__gte=tznow())
 
 
 class Booking(models.Model):
