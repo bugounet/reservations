@@ -9,22 +9,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
-<header>
-    <a id="site-logo" href="{% url 'index' %}">Reservations</a>
-    <nav>
-        {% if user.is_staff %}
-        <li class="site-nav-item">
-            <a href="{% url 'resources_list' %}">Resources</a>
-        </li>
-        {% endif %}
-        <li class="site-nav-item">
-            <a href="{% url 'bookings_list' %}">Bookings</a>
-        </li>
-        <li class="site-nav-item">
-            {{user.username}} (<a href="{% url 'logout' %}">logout</a>)
-        </li>
-    </nav>
-</header>
+{% include "website/components/header.html" %}
 <div class="page">
     {% block content %}
     {% endblock %}

@@ -1,0 +1,27 @@
+{%load i18n %}
+<header>
+    <a id="site-logo" href="{% url 'index' %}">Reservations</a>
+    <nav>
+        {% if user.is_staff %}
+        <li class="site-nav-item">
+            <a href="{% url 'resources_list' %}">
+                {% trans "Resources" %}
+            </a>
+        </li>
+        {% endif %}
+        <li class="site-nav-item">
+            <a href="{% url 'bookings_list' %}">
+                {% trans "Bookings" %}
+            </a>
+        </li>
+        <li class="site-nav-item">
+            <a href="{% url 'create_booking_view' %}">
+                {% trans "Book something" %}
+            </a>
+        </li>
+        <li class="site-nav-item">
+            {{user.username}}
+            (<a href="{% url 'logout' %}">{% trans "logout" %}</a>)
+        </li>
+    </nav>
+</header>

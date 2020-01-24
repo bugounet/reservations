@@ -10,6 +10,7 @@ from .forms import ResourceForm
 class ResourcesListView(LoginRequiredMixin, ListView):
     model = Resource
     allow_empty = True
+    paginate_by = 10
     template_name = 'resources/resources_list.html'
 
 

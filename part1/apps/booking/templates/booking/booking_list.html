@@ -17,4 +17,7 @@
         {%include "booking/components/booking-listitem.html" with booking=booking%}
     {%endfor%}
 </table>
+
+{% include "website/components/paginator.html" with page=page_obj paginator=paginator %}
+
 {%endblock%}}

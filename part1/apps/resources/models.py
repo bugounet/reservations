@@ -44,3 +44,9 @@ class Resource(models.Model):
         max_length=255,
         help_text=_("Resource type. eg: desk, room, screen, pen, parking spot")
     )
+
+    def __repr__(self):
+        return str(self)
+
+    def __str__(self):
+        return f"{self.label}"
