@@ -15,8 +15,12 @@ from apps.resources.models import Resource
 
 class BookingSetupMixin():
     @classmethod
-    def create_room_resource(cls):
-        return Resource.objects.create(label="Room A", type="Conference-room")
+    def create_room_resource(cls, capacity=None):
+        return Resource.objects.create(
+            label="Room A",
+            type="Conference-room",
+            capacity=capacity
+        )
 
     @classmethod
     def create_user(cls, name, admin=False):
@@ -416,3 +420,36 @@ class QuerySetTestCase(BookingSetupMixin, TestCase):
             ).first(), None,
             tested_booking
         )
+
+class PreSaveChecksTestCase(BookingSetupMixin, TestCase):
+    room = None
+    user_1 = None
+    user_2 = None
+    user_admin = None
+
+    @classmethod
+    def setUpClass(cls):
+        cls.user_1 = cls.create_user("1")
+        cls.user_2 = cls.create_user("2")
+        cls.user_admin = cls.create_user("admin", admin=True)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.user_1.delete()
+        cls.user_2.delete()
+        cls.user_admin.delete()
+
+    def test_book_twice_the_same_resource(self):
+        self.room = self.create_room_resource(capacity=None)
+
+        self.create_booking(self.user_1, tznow(), tznow()+timedelta(hours=1))
+        self.create_booking(self.user_2, tznow(), tznow()+timedelta(hours=1))
+
+    def test_book_twice_the_same_resource_when_it_has_only_one_spot(self):
+        self.room = self.create_room_resource(capacity=1)
+
+        self.create_booking(self.user_1, tznow(), tznow() + timedelta(hours=1))
+        with self.assertRaises(ValidationError):
+            self.create_booking(
+                self.user_2, tznow(), tznow() + timedelta(hours=1)
+            )

@@ -1,6 +1,8 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+from apps.booking.business_logics import PreSaveChecks
 from .queryset import BookingQueryset
 from .business_logics import MetaInfos
 
@@ -48,3 +50,11 @@ class Booking(models.Model):
     def get_absolute_url(self):
         from django.urls import reverse
         return reverse('booking_details', kwargs={'pk': self.pk})
+
+    def save(self, *args, **kwargs):
+        is_new = self.id is None
+        if is_new and PreSaveChecks(self).exceeds_resource_capacity():
+            raise ValidationError(
+                _("Can't save booking. Resource is overused.")
+            )
+        return super(Booking, self).save(*args, **kwargs)

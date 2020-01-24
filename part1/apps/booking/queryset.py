@@ -21,11 +21,11 @@ class BookingQueryset(models.QuerySet):
         """
         return self.exclude(
             models.Q(
-                start_datetime__gte=end,
-                end_datetime__gte=end,
+                start_datetime__gt=end,
+                end_datetime__gt=end,
             ) |
             models.Q(
-                start_datetime__lte=start,
-                end_datetime__lte=start,
+                start_datetime__lt=start,
+                end_datetime__lt=start,
             )
         )
