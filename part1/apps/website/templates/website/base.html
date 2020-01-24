@@ -1,30 +1,33 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Reservations</title>
-    <style>
-        .two-columns-page {
-            display:flex;
-            flex-direction: row;
-        }
-        .half_screen {
-            width:50%;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="{% static "website/css/main.css" %}" />
+    <!-- Sexy font. Helvetica is ugly -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
 <header>
+    <a id="site-logo" href="{% url 'index' %}">Reservations</a>
     <nav>
-        <li>
-            <a href="{% url 'view_bookings' %}">Bookings</a>
+        {% if user.is_staff %}
+        <li class="site-nav-item">
+            <a href="{% url 'new_resource' %}">Add resources</a>
         </li>
-        <li>{{user.username}} (<a href="{% url 'logout' %}">logout</a>)</li>
+        {% endif %}
+        <li class="site-nav-item">
+            <a href="{% url 'bookings_list' %}">Bookings</a>
+        </li>
+        <li class="site-nav-item">
+            {{user.username}} (<a href="{% url 'logout' %}">logout</a>)
+        </li>
     </nav>
 </header>
-
-{% block content %}
-{% endblock %}
-
+<div class="page">
+    {% block content %}
+    {% endblock %}
+</div>
 </body>
 </html>

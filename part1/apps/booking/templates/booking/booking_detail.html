@@ -1,0 +1,10 @@
+{%extends "website/base.html" %}
+
+{%block content%}
+<h1>Edit booking</h1>
+<form method="post">
+    {% csrf_token %}
+    {{form.as_p }}
+    <input type="submit" name="save" value="Save changes"/>
+</form>
+{%endblock%}}

@@ -9,30 +9,4 @@
     want to book and the ones you already booked.</p>
 {% endblocktrans %}
 
-<div>
-    <h2>{%trans "Upcoming and ongoing reservations" %}</h2>
-    <ul>
-        {% for booking in bookings %}
-            <li>
-                {{booking.start_datetime}} - {{booking.end_datetime}}:
-                {{booking.title}}
-                <button>{%trans "Cancel" %}</button>
-            </li>
-
-        {% endfor %}
-    </ul>
-</div>
-
-<div>
-    <h2>{% trans "Available resources" %}</h2>
-    <ul>
-        {% for resource in resources%}
-            <li>
-                [{{resource.type}}]{{resource.label}}
-                <button>{% trans "Book me!" %}</button>
-            </li>
-        {% endfor %}
-    </ul>
-</div>
-
 {% endblock %}

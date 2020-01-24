@@ -2,6 +2,8 @@ from django.db import models
 from django.utils.timezone import now as tznow
 from django.utils.translation import ugettext_lazy as _
 
+from .business_logics import MetaInfos
+
 
 class BookingQueryset(models.QuerySet):
     def for_user(self, user, **kwargs):
@@ -53,3 +55,11 @@ class Booking(models.Model):
         verbose_name=_("Title"),
         help_text=_("Name of the event/reservation. max 250 chars.")
     )
+
+    @property
+    def meta_infos(self):
+        return MetaInfos(self)
+
+    def get_absolute_url(self):
+        from django.urls import reverse
+        return reverse('booking_details', kwargs={'pk': self.pk})
