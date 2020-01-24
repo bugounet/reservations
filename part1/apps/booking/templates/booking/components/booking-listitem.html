@@ -1,3 +1,4 @@
+{% load tz %}
 <tr
     class="{%if booking.meta_infos.is_over %}
         past-event
@@ -11,8 +12,16 @@
             {{booking.title}}
         </a>
     </td>
-    <td>{{booking.start_datetime}}</td>
-    <td>{{booking.end_datetime}}</td>
+    <td>
+        {% timezone current_user.preferences.preferred_timezone %}
+            {{booking.start_datetime}}
+        {% endtimezone %}
+    </td>
+    <td>
+        {% timezone current_user.preferences.preferred_timezone %}
+            {{booking.end_datetime}}
+        {% endtimezone %}
+    </td>
     <td>{{booking.resource.label}}</td>
     {%if user and user.is_staff %}
     <td>{{booking.owner}}</td>
