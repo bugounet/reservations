@@ -9,6 +9,7 @@ from .forms import BookingForm
 class BookingListView(LoginRequiredMixin, ListView):
     model = Booking
     allow_empty = True
+    paginate_by = 10
     template_name = 'booking/booking_list.html'
 
     def get_queryset(self, *args, **kwargs):
