@@ -1,15 +1,16 @@
 {%extends "website/base.html" %}
+{% load i18n %}
 
 {%block content%}
-<h1>Bookings</h1>
+<h1>{% trans "Bookings" %}</h1>
 <table>
     <tr>
-        <th>Title</th>
-        <th>Start</th>
-        <th>End</th>
-        <th>Resource</th>
+        <th>{% trans "Title" %}</th>
+        <th>{% trans "Start" %}</th>
+        <th>{% trans "End" %}</th>
+        <th>{% trans "Resource" %}</th>
         {%if request.user.is_staff %}
-        <th>Owner</th>
+        <th>{% trans "Owner" %}</th>
         {%endif%}
     </tr>
     {%for booking in object_list%}

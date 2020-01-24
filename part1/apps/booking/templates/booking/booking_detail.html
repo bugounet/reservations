@@ -1,10 +1,19 @@
 {%extends "website/base.html" %}
+{% load i18n %}
 
 {%block content%}
-<h1>Edit booking</h1>
+<h1>{% trans "Edit booking" %}</h1>
 <form method="post">
     {% csrf_token %}
+    {% if request.user.is_staff %}
+        {% trans "Owner: " %}{{booking.owner.username}}
+    {% endif %}
     {{form.as_p }}
-    <input type="submit" name="save" value="Save changes"/>
+    <input
+            type="submit"
+            name="save"
+            value="{% trans 'Save' %}"
+            class="btn btn-primary"
+    />
 </form>
 {%endblock%}}
