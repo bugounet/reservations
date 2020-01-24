@@ -1,19 +1,10 @@
 from django.contrib.auth import logout
-from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.utils.timezone import now as tznow
 
-
-# Create your views here.
 from apps.booking.models import Booking
 from apps.resources.models import Resource
-
-
-def get_bookings(user):
-    return Booking.objects.for_user(user)
-
-
-def get_resources():
-    return Resource.objects.all()
 
 
 @login_required
@@ -26,8 +17,10 @@ def index_view(request):
     user = request.user
     return render(request, "website/index.html", {
         'user': user,
-        'bookings': get_bookings(user),
-        'resources': get_resources(),
+        'bookings': Booking.objects.for_user(user).filter(
+            end_datetime__gte=tznow()
+        ),
+        'resources': Resource.objects.all(),
     })
 
 
