@@ -2,13 +2,11 @@
 <header>
     <a id="site-logo" href="{% url 'index' %}">Reservations</a>
     <nav>
-        {% if user.is_staff %}
         <li class="site-nav-item">
             <a href="{% url 'resources_list' %}">
                 {% trans "Resources" %}
             </a>
         </li>
-        {% endif %}
         <li class="site-nav-item">
             <a href="{% url 'bookings_list' %}">
                 {% trans "Bookings" %}
