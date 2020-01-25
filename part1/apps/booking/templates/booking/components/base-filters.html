@@ -1,0 +1,23 @@
+{%load i18n %}
+<ul>
+    <li>
+        <a href="{% url 'bookings_list' %}?timeline=past">
+            {% trans "Past" %}
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'bookings_list' %}?timeline=ongoing">
+            {% trans "Present" %}
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'bookings_list' %}?timeline=future">
+            {% trans "Future" %}
+        </a>
+    </li>
+    <li>
+        <a href="{% url 'bookings_list' %}">
+            {% trans "All" %}
+        </a>
+    </li>
+</ul>
