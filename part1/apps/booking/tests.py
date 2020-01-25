@@ -8,7 +8,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.utils.timezone import now as tznow
 
-from apps.booking.business_logics import MetaInfos
+from apps.booking.business_logics import MetaInfo
 from apps.booking.forms import BookingForm
 from apps.booking.models import Booking
 from apps.resources.models import Resource
@@ -118,7 +118,7 @@ class BookingManagerTestCase(BookingSetupMixin, TestCase):
             self.user_1.id
         )
 
-class ModelMetaInfosAndPropertiesTestCase(BookingSetupMixin, TestCase):
+class ModelMetaInfoAndPropertiesTestCase(BookingSetupMixin, TestCase):
     room = None
     user_1 = None
     user_2 = None
@@ -147,34 +147,34 @@ class ModelMetaInfosAndPropertiesTestCase(BookingSetupMixin, TestCase):
         mocked_booking = Mock()
         mocked_booking.end_datetime = tznow() - timedelta(hours=1)
 
-        self.assertTrue(MetaInfos(mocked_booking).is_over())
+        self.assertTrue(MetaInfo(mocked_booking).is_over())
 
     def test_meta_info_is_over_when_end_date_is_in_the_future(self):
         mocked_booking = Mock()
         mocked_booking.end_datetime = tznow()+timedelta(hours=1)
 
-        self.assertFalse(MetaInfos(mocked_booking).is_over())
+        self.assertFalse(MetaInfo(mocked_booking).is_over())
 
     def test_meta_infos_is_ongoing_when_started_but_not_ended(self):
         mocked_booking = Mock()
         mocked_booking.start_datetime = tznow() - timedelta(hours=1)
         mocked_booking.end_datetime = tznow() + timedelta(hours=1)
 
-        self.assertTrue(MetaInfos(mocked_booking).is_ongoing())
+        self.assertTrue(MetaInfo(mocked_booking).is_ongoing())
 
     def test_meta_infos_is_ongoing_when_started_and_ended(self):
         mocked_booking = Mock()
         mocked_booking.start_datetime = tznow() - timedelta(hours=2)
         mocked_booking.end_datetime = tznow() - timedelta(hours=1)
 
-        self.assertFalse(MetaInfos(mocked_booking).is_ongoing())
+        self.assertFalse(MetaInfo(mocked_booking).is_ongoing())
 
     def test_meta_infos_is_ongoing_when_not_started_yet(self):
         mocked_booking = Mock()
         mocked_booking.start_datetime = tznow() + timedelta(hours=1)
         mocked_booking.end_datetime = tznow() + timedelta(hours=2)
 
-        self.assertFalse(MetaInfos(mocked_booking).is_ongoing())
+        self.assertFalse(MetaInfo(mocked_booking).is_ongoing())
 
 class BookingFormTestCase(BookingSetupMixin, TestCase):
     room = None

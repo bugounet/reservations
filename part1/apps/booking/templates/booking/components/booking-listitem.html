@@ -1,14 +1,8 @@
 {% load tz %}
 <tr
-    class="{%if booking.meta_infos.is_over %}
-        past-event
-    {%elif booking.meta_infos.is_ongoing %}
-        current-event
-    {%else%}
-        upcoming-event
-    {%endif%}">
+    class="{%if booking.meta_infos.is_ongoing %}current-event{%endif%}">
     <td>
-        <a href="{% url 'booking_details' booking.id %}">
+        <a href="{% url 'booking_details' booking.pk %}">
             {{booking.title}}
         </a>
     </td>

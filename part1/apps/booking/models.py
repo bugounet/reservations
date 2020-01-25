@@ -4,7 +4,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from apps.booking.business_logics import PreSaveChecks
 from .queryset import BookingQueryset
-from .business_logics import MetaInfos
+from .business_logics import MetaInfo
 
 
 class Booking(models.Model):

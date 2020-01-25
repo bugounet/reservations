@@ -27,7 +27,6 @@ class BookingForm(forms.ModelForm):
         start_datetime = cleaned_data.get("start_datetime")
         end_datetime = cleaned_data.get("end_datetime")
 
-
         if not (end_datetime and start_datetime):
             raise forms.ValidationError(
                 _("Missing start or end date. Both are required.")

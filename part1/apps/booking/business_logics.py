@@ -1,13 +1,13 @@
 from django.utils.timezone import now as tznow
 
 
-class MetaInfos():
+class MetaInfo:
     def __init__(self, booking):
         self.booking = booking
 
     def is_over(self):
         """ Is the booking end passed """
-        return (self.booking.end_datetime < tznow())
+        return self.booking.end_datetime < tznow()
 
     def is_ongoing(self):
         """ Is the booking started and not ended yet."""
@@ -15,7 +15,14 @@ class MetaInfos():
             self.booking.start_datetime <= tznow() < self.booking.end_datetime
         )
 
-class PreSaveChecks():
+    def is_future(self):
+        return self.booking.start_datetime > tznow()
+
+    def upcoming_or_current(self):
+        return self.booking.end_datetime > tznow()
+
+
+class PreSaveChecks:
     def __init__(self, booking):
         self.booking = booking
         self.model = booking.__class__
