@@ -8,10 +8,19 @@ class BookingQueryset(models.QuerySet):
         if user.is_staff:
             return self.filter(**kwargs)
         else:
-            return self.filter(owner_id=user.id, **kwargs)
+            return self.filter(owner_id=user.pk, **kwargs)
 
     def past(self):
         return self.filter(end_datetime__lte=tznow())
+
+    def ongoing(self):
+        return self.filter(
+            start_datetime__lte=tznow(),
+            end_datetime__gte=tznow()
+        )
+
+    def upcoming(self):
+        return self.filter(start_datetime__gte=tznow())
 
     def upcoming_and_current(self):
         return self.filter(end_datetime__gte=tznow())

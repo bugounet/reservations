@@ -7,15 +7,31 @@ from .forms import BookingForm
 
 
 class BookingListView(LoginRequiredMixin, ListView):
+    """ This list allows you to view your bookings.
+
+    You can add a filter on bookings dates to view past, ongoing or upcoming:
+
+    GET /bookings?timeline=[past/ongoing/future]
+    """
     model = Booking
     allow_empty = True
     paginate_by = 10
     template_name = 'booking/booking_list.html'
 
     def get_queryset(self, *args, **kwargs):
-        return Booking.objects.for_user(self.request.user).order_by(
+        bookings_queryset = Booking.objects.for_user(self.request.user).order_by(
             '-start_datetime'
         )
+        timeline = self.request.GET.get('timeline', None)
+        if timeline not in ['past', 'ongoing', 'future']:
+            return bookings_queryset
+        # else:
+        if timeline == 'past':
+            return bookings_queryset.past()
+        elif timeline == 'ongoing':
+            return bookings_queryset.ongoing()
+        else:
+            return bookings_queryset.upcoming()
 
 
 class BookingDetailsView(LoginRequiredMixin, UpdateView):
