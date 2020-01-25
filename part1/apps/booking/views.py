@@ -1,5 +1,6 @@
+from django.urls import reverse
 from django.views.generic import ListView
-from django.views.generic.edit import UpdateView, CreateView
+from django.views.generic.edit import UpdateView, CreateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from .models import Booking
@@ -53,7 +54,17 @@ class BookingCreationView(LoginRequiredMixin, CreateView):
     def get_queryset(self):
         return Booking.objects.for_user(self.request.user)
 
-
     def form_valid(self, form):
         form.instance.owner = self.request.user
         return super().form_valid(form)
+
+class BookingDeletionView(LoginRequiredMixin, DeleteView):
+    model = Booking
+    template_name = 'booking/booking_delete.html'
+    context_object_name = 'booking'
+
+    def get_success_url(self):
+        return reverse('bookings_list')
+
+    def get_queryset(self):
+        return Booking.objects.for_user(self.request.user).upcoming_and_current()

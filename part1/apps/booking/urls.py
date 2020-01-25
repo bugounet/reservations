@@ -13,6 +13,11 @@ urlpatterns = [
         name="booking_details"
     ),
     path(
+        'booking/<int:pk>/confirm-delete',
+        views.BookingDeletionView.as_view(),
+        name="booking_delete"
+    ),
+    path(
         'bookings',
         views.BookingListView.as_view(),
         name="bookings_list"
