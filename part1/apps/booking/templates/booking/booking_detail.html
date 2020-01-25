@@ -1,5 +1,6 @@
 {%extends "website/base.html" %}
 {% load i18n %}
+{% load tz %}
 
 {%block content%}
 <h1>{% trans "Edit booking" %}</h1>
@@ -8,7 +9,14 @@
     {% if request.user.is_staff %}
         {% trans "Owner: " %}{{booking.owner.username}}
     {% endif %}
-    {{form.as_p }}
+    {% timezone request.user.preferences.preferred_timezone %}
+        {{form.as_p}}
+    {% endtimezone %}
+    <input
+            type="hidden"
+            name="timezone"
+            value="{{request.user.preferences.preferred_timezone}}"
+    />
     <input
             type="submit"
             name="save"
@@ -16,4 +24,5 @@
             class="btn btn-primary"
     />
 </form>
+
 {%endblock%}}
