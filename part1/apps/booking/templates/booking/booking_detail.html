@@ -4,25 +4,10 @@
 
 {%block content%}
 <h1>{% trans "Edit booking" %}</h1>
-<form method="post">
-    {% csrf_token %}
-    {% if request.user.is_staff %}
-        {% trans "Owner: " %}{{booking.owner.username}}
-    {% endif %}
-    {% timezone request.user.preferences.preferred_timezone %}
-        {{form.as_p}}
-    {% endtimezone %}
-    <input
-            type="hidden"
-            name="timezone"
-            value="{{request.user.preferences.preferred_timezone}}"
-    />
-    <input
-            type="submit"
-            name="save"
-            value="{% trans 'Save' %}"
-            class="btn btn-primary"
-    />
-</form>
-
+{% if booking.meta_info.is_future %}
+    {% include 'booking/components/booking-details-write.html' with booking=booking request=request %}
+{%else %}
+    {% include 'booking/components/booking-details-read.html' with booking=booking request=request %}
+{%endif%}
+{% include 'booking/components/cancel-button.html' with booking=booking %}
 {%endblock%}}

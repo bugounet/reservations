@@ -1,0 +1,28 @@
+{% load i18n %}
+<div>
+    <p>{% blocktrans with title=booking.title %}
+        Title: {{title}}
+        {% endblocktrans %}
+    </p>
+    <p>
+        {% blocktrans with start=booking.start_datetime %}
+            Start: {{start}}
+        {% endblocktrans %}
+    </p>
+    <p>
+        {% blocktrans with end=booking.end_datetime %}
+            End: {{end}}
+        {% endblocktrans %}</p>
+    <p>
+        {% blocktrans with resource=booking.resoource.label %}
+            Resource: {{resource}}
+        {% endblocktrans %}
+    </p>
+    {%if request.user.is_staff %}
+    <p>
+        {% blocktrans with owner=booking.owner.username %}
+            Owner: {{owner}}
+        {% endblocktrans %}
+    </p>
+    {%endif%}
+</div>
