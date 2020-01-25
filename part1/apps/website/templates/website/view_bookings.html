@@ -17,7 +17,7 @@
                 {{booking.title}} ({{booking.resource.label}})
                     <input type="submit" name="cancel" value="Cancel"/>
                     <input type="hidden" name="booking_id"
-                           value="{{booking.id}}"/>
+                           value="{{booking.pk}}"/>
                 </form>
             </li>
             {% endfor %}

@@ -36,7 +36,7 @@ class PreSaveChecks:
             self.model.objects
                 # note: if using status deletion, think of filtering active
                 # bookings
-                .filter(resource_id=self.resource.id)
+                .filter(resource_id=self.resource.pk)
                 .overlapping_bookings(
                     start=self.booking.start_datetime,
                     end=self.booking.end_datetime

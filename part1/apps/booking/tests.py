@@ -115,7 +115,7 @@ class BookingManagerTestCase(BookingSetupMixin, TestCase):
         self.assertEqual(Booking.objects.for_user(self.user_1).count(), 1)
         self.assertEqual(
             Booking.objects.for_user(self.user_1)[0].owner_id,
-            self.user_1.id
+            self.user_1.pk
         )
 
 class ModelMetaInfoAndPropertiesTestCase(BookingSetupMixin, TestCase):

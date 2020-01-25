@@ -46,15 +46,15 @@ class Booking(models.Model):
     )
 
     @property
-    def meta_infos(self):
-        return MetaInfos(self)
+    def meta_info(self):
+        return MetaInfo(self)
 
     def get_absolute_url(self):
         from django.urls import reverse
         return reverse('booking_details', kwargs={'pk': self.pk})
 
     def save(self, *args, **kwargs):
-        is_new = self.id is None
+        is_new = self.pk is None
         if is_new and PreSaveChecks(self).exceeds_resource_capacity():
             raise ValidationError(
                 _("Can't save booking. Resource is overused.")

@@ -17,7 +17,7 @@ class PreferencesTestCase(TestCase):
         # then prefs are created
         self.assertTrue(UserPreference.objects.filter(user=u).exists())
         # AND access to preferences works
-        self.assertIsNotNone(u.preferences.id)
+        self.assertIsNotNone(u.preferences.pk)
 
     def test_user_prefs_are_initialized_with_paris_TZ(self):
         User = get_user_model()
