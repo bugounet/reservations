@@ -1,0 +1,32 @@
+{%extends "website/base.html" %}
+{% load i18n %}
+
+{%block content%}
+{% language request.user.preferences.language %}
+<h1>{% trans "Resources" %}</h1>
+
+{% if request.user.is_staff %}
+<div class="text-right vertical-padding-10">
+    <a href="{% url 'create_resource_view' %}">
+        <button class="btn btn-primary">
+            {% trans "Create resource" %}
+        </button>
+    </a>
+</div>
+
+{%endif %}
+<table class="table">
+    <thead class="thead-dark">
+        <th scope="col">{% trans "Label" %}</th>
+        <th scope="col">{% trans "Type" %}</th>
+        <th scope="col">{% trans "Capacity" %}</th>
+        <th scope="col">{% trans "Location" %}</th>
+    </thead>
+    {%for resource in object_list%}
+        {%include "resources/components/resource-listitem.html" with resource=resource user=request.user%}
+    {%endfor%}
+</table>
+
+{% include "website/components/paginator.html" with page=page_obj paginator=paginator user=request.user%}
+{% endlanguage %}
+{%endblock%}

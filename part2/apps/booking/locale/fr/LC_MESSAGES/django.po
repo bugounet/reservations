@@ -1,0 +1,265 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-01-27 10:00+0000\n"
+"PO-Revision-Date: 2020-01-27 10:31+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.4\n"
+
+#: apps/booking/forms.py:15 apps/booking/forms.py:20
+msgid "Format yyyy-mm-dd hh:mm:ss"
+msgstr "Format jj-mm-aaaa h:mm:s"
+
+#: apps/booking/forms.py:32
+msgid "Missing start or end date. Both are required."
+msgstr ""
+"Une ou les dates de début et de fin sont manquantes. Les deux sont requises."
+
+#: apps/booking/forms.py:37
+#, python-format
+msgid "Invalid end date: %(value)s is before actual start"
+msgstr "Date de fin invalide: %(value)s est avant la date de début"
+
+#: apps/booking/models.py:30
+msgid "Cancelled"
+msgstr "Annulé"
+
+#: apps/booking/models.py:31
+msgid "Scheduled"
+msgstr "Planifié"
+
+#: apps/booking/models.py:39
+msgid "User"
+msgstr "Utilisateur"
+
+#: apps/booking/models.py:40
+msgid "User owning this"
+msgstr "Organisateur"
+
+#: apps/booking/models.py:44
+#: apps/booking/templates/booking/booking_list.html:14
+msgid "Resource"
+msgstr "Ressource"
+
+#: apps/booking/models.py:48
+msgid "Booked resource."
+msgstr "Ressource réservée."
+
+#: apps/booking/models.py:51
+msgid "Booking start date & time"
+msgstr "Date et heure de début de la réservation"
+
+#: apps/booking/models.py:52
+msgid "Beginning of the booking"
+msgstr "Début de la réservation"
+
+#: apps/booking/models.py:56
+msgid "Booking end date & time"
+msgstr "Date et heure de fin de la réservation"
+
+#: apps/booking/models.py:57
+msgid "End of usage date and time"
+msgstr "Fin de la réservation"
+
+#: apps/booking/models.py:62
+#: apps/booking/templates/booking/booking_list.html:11
+msgid "Title"
+msgstr "Titre"
+
+#: apps/booking/models.py:63
+msgid "Name of the event/reservation. max 250 chars."
+msgstr "Nom de l’évènement/réservation. Max 250 caractères."
+
+#: apps/booking/models.py:82
+msgid "Can't save booking. Resource is overused."
+msgstr ""
+"Impossible d’enregistrer la réservation. La ressource est trop utilisée à "
+"cette heure."
+
+#: apps/booking/templates/booking/booking_create.html:6
+msgid "Book a resource"
+msgstr "Réserver une ressource"
+
+#: apps/booking/templates/booking/booking_create.html:10
+msgid "Add"
+msgstr "Ajouter"
+
+#: apps/booking/templates/booking/booking_delete.html:7
+msgid "Confirmation"
+msgstr "Confirmation"
+
+#: apps/booking/templates/booking/booking_delete.html:9
+msgid ""
+"\n"
+"You are going to cancel the following event:\n"
+msgstr ""
+"\n"
+"Vous allez annuler l’évènement suivant\n"
+
+#: apps/booking/templates/booking/booking_delete.html:15
+#, python-format
+msgid ""
+"\n"
+"%(title)s from %(start)s to %(end)s.\n"
+msgstr ""
+"\n"
+"%(title)s de %(start)s à %(end)s.\n"
+
+#: apps/booking/templates/booking/booking_delete.html:19
+#, python-format
+msgid ""
+"\n"
+"(Scheduled for %(owner)s)\n"
+msgstr ""
+"\n"
+"(Planifié pour %(owner)s)\n"
+
+#: apps/booking/templates/booking/booking_delete.html:26
+msgid ""
+"\n"
+"Are you sure?\n"
+msgstr ""
+"\n"
+"Êtes-vous sûr?\n"
+
+#: apps/booking/templates/booking/booking_delete.html:31
+msgid "Yes"
+msgstr "Oui"
+
+#: apps/booking/templates/booking/booking_delete.html:34
+msgid "No"
+msgstr "Non"
+
+#: apps/booking/templates/booking/booking_detail.html:7
+msgid "Edit booking"
+msgstr "Modifier la réservation"
+
+#: apps/booking/templates/booking/booking_list.html:7
+msgid "Bookings"
+msgstr "Réservations"
+
+#: apps/booking/templates/booking/booking_list.html:12
+msgid "Start"
+msgstr "Début"
+
+#: apps/booking/templates/booking/booking_list.html:13
+msgid "End"
+msgstr "Fin"
+
+#: apps/booking/templates/booking/booking_list.html:16
+msgid "Owner"
+msgstr "Organisateur"
+
+#: apps/booking/templates/booking/components/base-filters.html:6
+msgid "Past"
+msgstr "Passées"
+
+#: apps/booking/templates/booking/components/base-filters.html:11
+msgid "Present"
+msgstr "Présentes"
+
+#: apps/booking/templates/booking/components/base-filters.html:16
+msgid "Future"
+msgstr "Futures"
+
+#: apps/booking/templates/booking/components/base-filters.html:21
+msgid "All"
+msgstr "Toutes"
+
+#: apps/booking/templates/booking/components/booking-details-read.html:4
+#, python-format
+msgid ""
+"\n"
+"        Title: %(title)s\n"
+"        "
+msgstr ""
+"\n"
+"        Titre : %(title)s\n"
+"        "
+
+#: apps/booking/templates/booking/components/booking-details-read.html:9
+#, python-format
+msgid ""
+"\n"
+"            Start: %(start)s\n"
+"        "
+msgstr ""
+"\n"
+"            Début: %(start)s\n"
+"        "
+
+#: apps/booking/templates/booking/components/booking-details-read.html:14
+#, python-format
+msgid ""
+"\n"
+"            End: %(end)s\n"
+"        "
+msgstr ""
+"\n"
+"            Fin: %(end)s\n"
+"        "
+
+#: apps/booking/templates/booking/components/booking-details-read.html:18
+#, python-format
+msgid ""
+"\n"
+"            Resource: %(resource)s\n"
+"        "
+msgstr ""
+"\n"
+"            Ressource: %(resource)s\n"
+"        "
+
+#: apps/booking/templates/booking/components/booking-details-read.html:24
+#, python-format
+msgid ""
+"\n"
+"            Owner: %(owner)s\n"
+"        "
+msgstr ""
+"\n"
+"            Organisateur: %(owner)s\n"
+"        "
+
+#: apps/booking/templates/booking/components/booking-details-write.html:7
+msgid "Owner: "
+msgstr "Organisateur: "
+
+#: apps/booking/templates/booking/components/booking-details-write.html:20
+msgid "Save"
+msgstr "Enregistrer"
+
+#: apps/booking/templates/booking/components/cancel-button.html:6
+msgid "Cancel"
+msgstr "Annuler"
+
+#, fuzzy
+#~| msgid "Confirmation"
+#~ msgid "Syndication"
+#~ msgstr "Confirmation"
+
+#, fuzzy
+#~| msgid "End"
+#~ msgid "and"
+#~ msgstr "Fin"
+
+#, fuzzy
+#~| msgid "Confirmation"
+#~ msgid "Duration"
+#~ msgstr "Confirmation"
+
+#, fuzzy
+#~| msgid "Start"
+#~ msgid "Sat"
+#~ msgstr "Début"

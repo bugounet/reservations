@@ -1,0 +1,38 @@
+{%extends "website/base.html" %}
+{% load i18n %}
+{% load tz %}
+
+{%block content%}
+{% language request.user.preferences.language %}
+<h1>{% trans "Confirmation" %}</h1>
+<p>
+{%blocktrans%}
+You are going to cancel the following event:
+{%endblocktrans%}
+</p>
+    <ul>
+        <li>
+{%blocktrans with title=booking.title start=booking.start_datetime end=booking.end_datetime %}
+{{title}} from {{start}} to {{end}}.
+{%endblocktrans%}
+            {% if request.user.is_staff %}
+{%blocktrans with owner=booking.owner.username %}
+(Scheduled for {{owner}})
+{%endblocktrans%}
+            {% endif %}
+        </li>
+    </ul>
+<p>
+{%blocktrans%}
+Are you sure?
+{%endblocktrans%}
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="{%trans 'Yes' %}" name="delete"/>
+    </form>
+    <a href="{% url 'booking_details' booking.pk %}">
+        <button>{%trans "No"%}</button>
+    </a>
+</p>
+{%endlanguage%}
+{%endblock%}}
