@@ -1,29 +1,30 @@
 {%load i18n %}
 {% language user.preferences.language %}
-<header>
-    <a id="site-logo" href="{% url 'index' %}">Reservations</a>
-    <nav>
-        <li class="site-nav-item">
-            <a href="{% url 'resources_list' %}">
+<header class="navbar bg-light">
+    <a class="navbar-brand" href="{% url 'index' %}">Reservations</a>
+    <ul class="nav">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'resources_list' %}">
                 {% trans "Resources" %}
             </a>
         </li>
-        <li class="site-nav-item">
-            <a href="{% url 'bookings_list' %}">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'bookings_list' %}">
                 {% trans "Bookings" %}
             </a>
         </li>
-        <li class="site-nav-item">
-            <a href="{% url 'create_booking_view' %}">
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'create_booking_view' %}">
                 {% trans "Book something" %}
             </a>
         </li>
         {% if user.is_authenticated %}
-        <li class="site-nav-item">
-            {{user.username}}
-            (<a href="{% url 'logout' %}">{% trans "logout" %}</a>)
+        <li class="nav-item inline">
+            <a class="nav-link" href="{% url 'logout' %}">
+                {{user.username}} ({% trans "logout" %})
+            </a>
         </li>
         {% endif %}
-    </nav>
+    </ul>
 </header>
 {% endlanguage %}

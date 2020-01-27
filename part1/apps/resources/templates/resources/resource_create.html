@@ -7,7 +7,7 @@
 <form method="post">
     {% csrf_token %}
     {{form.as_p }}
-    <input type="submit" name="add" value='{% trans "Add" %}'/>
+    <input type="submit" name="add" class="btn btn-primary" value='{% trans "Add" %}'/>
 </form>
 {% endlanguage %}
 {%endblock%}}

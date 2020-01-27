@@ -1,7 +1,7 @@
 {% load i18n %}
 {% load tz %}
 {% language request.user.preferences.language %}
-<form method="post">
+<form method="post" class="form">
     {% csrf_token %}
     {% if request.user.is_staff %}
         {% trans "Owner: " %}{{booking.owner.username}}
