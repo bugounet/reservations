@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 import pytz
@@ -20,6 +21,12 @@ class UserPreference(models.Model):
         'auth.User',
         on_delete=models.CASCADE,
         related_name='preferences'
+    )
+
+    language = models.CharField(
+        max_length=10,
+        choices=settings.LANGUAGES,
+        default='en-us'
     )
 
     # Preferred timezone is not using django-timezone-field library (not
