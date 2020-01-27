@@ -71,10 +71,6 @@ class Booking(models.Model):
     def actions(self):
         return BookingActions(self)
 
-    def get_absolute_url(self):
-        from django.urls import reverse
-        return reverse('booking_details', kwargs={'pk': self.pk})
-
     def save(self, *args, **kwargs):
         is_new = self.pk is None
         if is_new and PreSaveChecks(self).exceeds_resource_capacity():
