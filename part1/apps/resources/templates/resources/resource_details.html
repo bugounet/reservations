@@ -2,6 +2,7 @@
 {% load i18n %}
 
 {%block content%}
+{% language request.user.preferences.language %}
 <h1>{{resource.label}}</h1>
 <ul>
     <li>{% trans "Type" %}: {{resource.type}}</li>
@@ -20,5 +21,5 @@ Booked by {{username}} from {{start}} to {{end}}: {{title}}
         {% trans "Not booked yet" %}
     {% endfor %}
 </ul>
-
+{% endlanguage %}
 {%endblock%}}

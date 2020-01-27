@@ -3,6 +3,7 @@
 {% load tz %}
 
 {%block content%}
+{% language request.user.preferences.language %}
 <h1>{% trans "Confirmation" %}</h1>
 <p>
 {%blocktrans%}
@@ -33,5 +34,5 @@ Are you sure?
         <button>{%trans "No"%}</button>
     </a>
 </p>
-
+{%endlanguage%}
 {%endblock%}}

@@ -1,4 +1,6 @@
 {% load tz %}
+{% load i18n %}
+{% language current_user.preferences.language %}
 <tr
     class="{%if booking.meta_infos.is_ongoing %}current-event{%endif%}">
     <td>
@@ -21,3 +23,4 @@
     <td>{{booking.owner}}</td>
     {%endif%}
 </tr>
+{% endlanguage %}

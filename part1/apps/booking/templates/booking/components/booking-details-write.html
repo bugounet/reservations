@@ -1,5 +1,6 @@
 {% load i18n %}
 {% load tz %}
+{% language request.user.preferences.language %}
 <form method="post">
     {% csrf_token %}
     {% if request.user.is_staff %}
@@ -20,3 +21,4 @@
             class="btn btn-primary"
     />
 </form>
+{% endlanguage %}

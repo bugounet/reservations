@@ -2,8 +2,9 @@
 {% load i18n %}
 
 {%block content%}
+{% language request.user.preferences.language %}
 <h1>{% trans "Bookings" %}</h1>
-{% include "booking/components/base-filters.html" %}
+{% include "booking/components/base-filters.html" with user=request.user%}
 <table>
     <tr>
         <th>{% trans "Title" %}</th>
@@ -19,6 +20,6 @@
     {%endfor%}
 </table>
 
-{% include "website/components/paginator.html" with page=page_obj paginator=paginator %}
-
+{% include "website/components/paginator.html" with page=page_obj paginator=paginator user=request.user%}
+{% endlanguage %}
 {%endblock%}}

@@ -2,11 +2,13 @@
 {% load i18n %}
 
 {% block content %}
-
-{% blocktrans %}
+{% language request.user.preferences.language %}
 <h1>Reservations</h1>
-<p>Hello {{user.username}}. Here you will be able to find the resources you
-    want to book and the ones you already booked.</p>
-{% endblocktrans %}
-
+<p>
+{% blocktrans with username=user.username %}
+Hello {{username}}. Here you will be able to find the resources you want to
+    book and the ones you already booked.
+{%endblocktrans%}
+</p>
+{% endlanguage %}
 {% endblock %}

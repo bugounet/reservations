@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <title>Reservations</title>
@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
 </head>
 <body>
-{% include "website/components/header.html" %}
+{% include "website/components/header.html" with user=request.user%}
 <div class="page">
     {% block content %}
     {% endblock %}

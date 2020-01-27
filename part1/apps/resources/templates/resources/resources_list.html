@@ -2,6 +2,7 @@
 {% load i18n %}
 
 {%block content%}
+{% language request.user.preferences.language %}
 <h1>{% trans "Resources" %}</h1>
 
 {% if request.user.is_staff %}
@@ -20,10 +21,10 @@
         <th>{% trans "Location" %}</th>
     </tr>
     {%for resource in object_list%}
-        {%include "resources/components/resource-listitem.html" with resource=resource%}
+        {%include "resources/components/resource-listitem.html" with resource=resource user=request.user%}
     {%endfor%}
 </table>
 
-{% include "website/components/paginator.html" with page=page_obj paginator=paginator %}
-
-{%endblock%}}
+{% include "website/components/paginator.html" with page=page_obj paginator=paginator user=request.user%}
+{% endlanguage %}
+{%endblock%}

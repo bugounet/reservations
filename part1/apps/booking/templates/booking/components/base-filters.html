@@ -1,4 +1,5 @@
 {%load i18n %}
+{% language user.preferences.language %}
 <ul>
     <li>
         <a href="{% url 'bookings_list' %}?timeline=past">
@@ -21,3 +22,4 @@
         </a>
     </li>
 </ul>
+{% endlanguage %}

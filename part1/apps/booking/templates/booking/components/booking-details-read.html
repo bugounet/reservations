@@ -1,4 +1,5 @@
 {% load i18n %}
+{% language request.user.preferences.language %}
 <div>
     <p>{% blocktrans with title=booking.title %}
         Title: {{title}}
@@ -26,3 +27,4 @@
     </p>
     {%endif%}
 </div>
+{% endlanguage %}

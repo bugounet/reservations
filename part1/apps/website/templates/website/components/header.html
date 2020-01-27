@@ -1,4 +1,5 @@
 {%load i18n %}
+{% language user.preferences.language %}
 <header>
     <a id="site-logo" href="{% url 'index' %}">Reservations</a>
     <nav>
@@ -23,3 +24,4 @@
         </li>
     </nav>
 </header>
+{% endlanguage %}
