@@ -92,6 +92,15 @@ DATABASES = {
     }
 }
 
+# cache
+# Using memory cache because I'm not sure the reviewer/runner has access to
+# other technologies
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        'LOCATION': 'unique-snowflake',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
