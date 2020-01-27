@@ -14,5 +14,6 @@
     {% block content %}
     {% endblock %}
 </div>
+{% include "website/components/footer.html" with user=request.user %}
 </body>
 </html>
