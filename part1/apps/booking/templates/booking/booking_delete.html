@@ -6,7 +6,7 @@
 <h1>{% trans "Confirmation" %}</h1>
 <p>
 {%blocktrans%}
-You are going to delete the following event:
+You are going to cancel the following event:
 {%endblocktrans%}
 </p>
     <ul>
@@ -25,7 +25,8 @@ You are going to delete the following event:
 {%blocktrans%}
 Are you sure?
 {%endblocktrans%}
-    <form method="">
+    <form method="post">
+        {% csrf_token %}
         <input type="submit" value="{%trans 'Yes' %}" name="delete"/>
     </form>
     <a href="{% url 'booking_details' booking.pk %}">

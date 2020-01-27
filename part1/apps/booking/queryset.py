@@ -3,6 +3,9 @@ from django.utils.timezone import now as tznow
 
 
 class BookingQueryset(models.QuerySet):
+    def active(self):
+        return self.filter(status=self.model.SCHEDULED)
+
     def for_user(self, user, **kwargs):
         kwargs.pop('owner', None)
         if user.is_staff:

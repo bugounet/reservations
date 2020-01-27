@@ -1,10 +1,10 @@
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
 
-from apps.booking.business_logics import PreSaveChecks
 from .queryset import BookingQueryset
-from .business_logics import MetaInfo
+from .business_logics import MetaInfo, PreSaveChecks, BookingActions
 
 
 class Booking(models.Model):
@@ -16,12 +16,23 @@ class Booking(models.Model):
     """
 
     class Meta:
-        index_together=[
+        index_together = [
             ('start_datetime', 'end_datetime'),
         ]
 
     objects = BookingQueryset.as_manager()
 
+    SCHEDULED = 'scheduled'
+    CANCELLED = 'cancelled'
+    status = models.CharField(
+        max_length=15,
+        choices=(
+            (CANCELLED, _('Cancelled')),
+            (SCHEDULED, _('Scheduled')),
+        ),
+        db_index=True,
+        default=SCHEDULED
+    )
     owner = models.ForeignKey(
         to='auth.User',
         related_name="bookings",
@@ -52,9 +63,13 @@ class Booking(models.Model):
         help_text=_("Name of the event/reservation. max 250 chars.")
     )
 
-    @property
+    @cached_property
     def meta_info(self):
         return MetaInfo(self)
+
+    @cached_property
+    def actions(self):
+        return BookingActions(self)
 
     def get_absolute_url(self):
         from django.urls import reverse

@@ -1,9 +1,13 @@
 from django.utils.timezone import now as tznow
 
 
-class MetaInfo:
+class BaseBookingExtension:
     def __init__(self, booking):
         self.booking = booking
+        self.model = booking.__class__
+
+
+class MetaInfo(BaseBookingExtension):
 
     def is_over(self):
         """ Is the booking end passed """
@@ -22,10 +26,10 @@ class MetaInfo:
         return self.booking.end_datetime > tznow()
 
 
-class PreSaveChecks:
+class PreSaveChecks(BaseBookingExtension):
+
     def __init__(self, booking):
-        self.booking = booking
-        self.model = booking.__class__
+        super(PreSaveChecks, self).__init__(booking)
         self.resource = booking.resource
 
     def exceeds_resource_capacity(self):
@@ -34,9 +38,8 @@ class PreSaveChecks:
 
         overlapping_boookings_on_same_resource = (
             self.model.objects
-                # note: if using status deletion, think of filtering active
-                # bookings
                 .filter(resource_id=self.resource.pk)
+                .active()
                 .overlapping_bookings(
                     start=self.booking.start_datetime,
                     end=self.booking.end_datetime
@@ -44,3 +47,10 @@ class PreSaveChecks:
         )
 
         return self.resource.capacity-1 < overlapping_boookings_on_same_resource
+
+
+class BookingActions(BaseBookingExtension):
+
+    def cancel(self):
+        self.booking.status = self.model.CANCELLED
+        self.booking.save(update_fields=['status'])

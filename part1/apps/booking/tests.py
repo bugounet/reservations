@@ -421,6 +421,23 @@ class QuerySetTestCase(BookingSetupMixin, TestCase):
             tested_booking
         )
 
+    def test_booking_status(self):
+        # Assuming we have a booking. it is active as a default
+        tested_booking = self.create_booking(
+            self.user_1,
+            start=tznow() + timedelta(minutes=30),
+            end=tznow() + timedelta(minutes=60)
+        )
+        self.assertEqual(Booking.objects.active().last(), tested_booking)
+
+        # When I cancel it:
+        tested_booking.actions.cancel()
+
+        # then it's not active by default but still accessible by admin views.
+        self.assertEqual(Booking.objects.active().last(), None)
+        self.assertEqual(Booking.objects.all().last(), tested_booking)
+
+
 class PreSaveChecksTestCase(BookingSetupMixin, TestCase):
     room = None
     user_1 = None
