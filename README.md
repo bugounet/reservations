@@ -92,7 +92,7 @@ time to ensure it still contains useful alive data.
 separate tables to keep the "active bookings" table smaller (and therefore 
 faster)
 - Django's Basic FKs implementation has an existence check. If I used pgSQL 
-instead I could pimp those to here again rely on DB's existing checks and 
+instead I could pimp those to rely on DB's existing checks and 
 avoid double work
 - Security: This app is local only. Once in prod, make sure to drop http
 - Security: To protect access to admin interface two things could be done: 
