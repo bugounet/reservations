@@ -18,10 +18,12 @@
                 {% trans "Book something" %}
             </a>
         </li>
+        {% if user.is_authenticated %}
         <li class="site-nav-item">
             {{user.username}}
             (<a href="{% url 'logout' %}">{% trans "logout" %}</a>)
         </li>
+        {% endif %}
     </nav>
 </header>
 {% endlanguage %}

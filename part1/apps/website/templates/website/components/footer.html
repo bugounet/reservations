@@ -1,10 +1,12 @@
 {%load i18n %}
 {% language user.preferences.language %}
 <footer>
+    {% if user.is_authenticated %}
     <p>
         {%trans "You are seeing content in your local timezone which is" %}
         {{user.preferences.preferred_timezone}}
     </p>
+    {% endif %}
     <p>
         Reservation app - 2020
     </p>
