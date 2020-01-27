@@ -12,7 +12,8 @@ pip install -r requirements.txt
 # Using debug mode since this doesn't come with staticfiles hosting.
 export DEBUG=true 
 python manage.py migrate
-python manage.py loaddata fixtures/superusers.json
+# load admins, basic-users and testing assets from dumped data
+python manage.py loaddata fixtures/*.json
 python manage.py runserver
 ```
 

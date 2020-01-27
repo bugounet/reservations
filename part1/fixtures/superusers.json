@@ -23,7 +23,8 @@
         "user": [
             "admin"
         ],
-        "_preferred_timezone": "Europe/Paris"
+        "_preferred_timezone": "Europe/Paris",
+        "language": "fr-fr"
     }
 }
 ]

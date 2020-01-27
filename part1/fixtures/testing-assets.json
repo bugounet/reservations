@@ -1,0 +1,210 @@
+[
+{
+    "model": "booking.booking",
+    "pk": 1,
+    "fields": {
+        "status": "scheduled",
+        "owner": [
+            "alice"
+        ],
+        "resource": 1,
+        "start_datetime": "2020-01-23T23:45:00Z",
+        "end_datetime": "2020-01-24T00:30:13Z",
+        "title": "Super party 1"
+    }
+},
+{
+    "model": "booking.booking",
+    "pk": 2,
+    "fields": {
+        "status": "scheduled",
+        "owner": [
+            "admin"
+        ],
+        "resource": 7,
+        "start_datetime": "2020-01-29T18:00:00Z",
+        "end_datetime": "2020-01-29T19:00:00Z",
+        "title": "Happy birthday Bob"
+    }
+},
+{
+    "model": "booking.booking",
+    "pk": 3,
+    "fields": {
+        "status": "scheduled",
+        "owner": [
+            "admin"
+        ],
+        "resource": 13,
+        "start_datetime": "2020-02-15T09:00:00Z",
+        "end_datetime": "2020-02-25T18:00:00Z",
+        "title": "holidays"
+    }
+},
+{
+    "model": "booking.booking",
+    "pk": 4,
+    "fields": {
+        "status": "cancelled",
+        "owner": [
+            "admin"
+        ],
+        "resource": 5,
+        "start_datetime": "2020-02-11T20:10:00Z",
+        "end_datetime": "2020-12-20T21:00:00Z",
+        "title": "Test"
+    }
+},
+{
+    "model": "booking.booking",
+    "pk": 5,
+    "fields": {
+        "status": "scheduled",
+        "owner": [
+            "admin"
+        ],
+        "resource": 4,
+        "start_datetime": "2020-02-01T10:00:00Z",
+        "end_datetime": "2020-02-01T11:00:00Z",
+        "title": "test"
+    }
+},
+{
+    "model": "booking.booking",
+    "pk": 6,
+    "fields": {
+        "status": "scheduled",
+        "owner": [
+            "admin"
+        ],
+        "resource": 2,
+        "start_datetime": "2020-01-14T23:08:00Z",
+        "end_datetime": "2020-01-17T01:00:00Z",
+        "title": "test"
+    }
+},
+{
+    "model": "booking.booking",
+    "pk": 7,
+    "fields": {
+        "status": "scheduled",
+        "owner": [
+            "alice"
+        ],
+        "resource": 12,
+        "start_datetime": "2020-01-25T19:00:00Z",
+        "end_datetime": "2020-01-25T20:00:00Z",
+        "title": "test GMT+2"
+    }
+},
+{
+    "model": "resources.resource",
+    "pk": 1,
+    "fields": {
+        "location": "First floor",
+        "capacity": 8,
+        "label": "Meeting room A",
+        "type": "meeting-room"
+    }
+},
+{
+    "model": "resources.resource",
+    "pk": 2,
+    "fields": {
+        "location": "First floor",
+        "capacity": 2,
+        "label": "Cubical 1",
+        "type": "cubical"
+    }
+},
+{
+    "model": "resources.resource",
+    "pk": 3,
+    "fields": {
+        "location": "First floor",
+        "capacity": 2,
+        "label": "Cubical 2",
+        "type": "cubical"
+    }
+},
+{
+    "model": "resources.resource",
+    "pk": 4,
+    "fields": {
+        "location": "First floor",
+        "capacity": 2,
+        "label": "Cubical 3",
+        "type": "cubical"
+    }
+},
+{
+    "model": "resources.resource",
+    "pk": 5,
+    "fields": {
+        "location": "First floor",
+        "capacity": 2,
+        "label": "Cubical 4",
+        "type": "cubical"
+    }
+},
+{
+    "model": "resources.resource",
+    "pk": 6,
+    "fields": {
+        "location": "First floor",
+        "capacity": 8,
+        "label": "Meeting room B",
+        "type": "meeting-room"
+    }
+},
+{
+    "model": "resources.resource",
+    "pk": 7,
+    "fields": {
+        "location": "Sea-level",
+        "capacity": null,
+        "label": "Patio",
+        "type": "outdoor"
+    }
+},
+{
+    "model": "resources.resource",
+    "pk": 12,
+    "fields": {
+        "location": "here",
+        "capacity": 10,
+        "label": "Room",
+        "type": "meeting-room"
+    }
+},
+{
+    "model": "resources.resource",
+    "pk": 13,
+    "fields": {
+        "location": "Next door",
+        "capacity": 1,
+        "label": "WC",
+        "type": "room"
+    }
+},
+{
+    "model": "resources.resource",
+    "pk": 14,
+    "fields": {
+        "location": "here",
+        "capacity": 4,
+        "label": "denjzfeznjk",
+        "type": "nfejzfenz"
+    }
+},
+{
+    "model": "resources.resource",
+    "pk": 15,
+    "fields": {
+        "location": "enzjkfeznjk",
+        "capacity": 123,
+        "label": "njknjk",
+        "type": "njknjk"
+    }
+}
+]
