@@ -21,9 +21,9 @@
 <input type="submit" value="{% trans 'login' %}">
 <input type="hidden" name="next" value="{{ next }}">
 </form>
+
 <div class="language-selector">
     {%language 'en-us' %}<a href="{%url 'login' %}">English</a>{%endlanguage %}
-    {%language 'fr-fr' %}<a href="{%url 'login' %}">Français
-</a>{%endlanguage %}
+    {%language 'fr-fr' %}<a href="{%url 'login' %}">Français</a>{%endlanguage %}
 </div>
 {% endblock %}
