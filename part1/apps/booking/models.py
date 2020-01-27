@@ -15,6 +15,11 @@ class Booking(models.Model):
     allocations in time. For recurring needs, create multiple bookings.
     """
 
+    class Meta:
+        index_together=[
+            ('start_datetime', 'end_datetime'),
+        ]
+
     objects = BookingQueryset.as_manager()
 
     owner = models.ForeignKey(
@@ -33,11 +38,13 @@ class Booking(models.Model):
     )
     start_datetime = models.DateTimeField(
         verbose_name=_("Booking start date & time"),
-        help_text=_("Beginning of the booking")
+        help_text=_("Beginning of the booking"),
+        db_index=True
     )
     end_datetime = models.DateTimeField(
         verbose_name=_("Booking end date & time"),
-        help_text=_("End of usage date and time")
+        help_text=_("End of usage date and time"),
+        db_index=True
     )
     title = models.CharField(
         max_length=255,
