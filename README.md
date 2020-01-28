@@ -95,9 +95,6 @@ faster)
 instead I could pimp those to rely on DB's existing checks and 
 avoid double work
 - Security: This app is local only. Once in prod, make sure to drop http
-- Security: To protect access to admin interface two things could be done: 
-adding a two-factor auth system AND changing admin endpoint (which is often 
-automatically called by robots over the web)
 - Tech: To avoid re-creating a workflow system we could enjoy 
 django-xworkflows lib that adds a lot of business logic seamlessly
 

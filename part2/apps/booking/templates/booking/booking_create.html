@@ -1,0 +1,13 @@
+{%extends "website/base.html" %}
+{% load i18n %}
+
+{%block content%}
+{% language request.user.preferences.language %}
+<h1>{% trans "Book a resource" %}</h1>
+<form method="post">
+    {% csrf_token %}
+    {{form.as_p }}
+    <input type="submit" name="add" class="btn btn-primary" value='{% trans "Add" %}'/>
+</form>
+{% endlanguage %}
+{%endblock%}}
