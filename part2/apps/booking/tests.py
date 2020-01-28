@@ -9,6 +9,7 @@ from django.urls import reverse
 from django.utils.timezone import now as tznow
 
 from apps.booking.business_logics import MetaInfo
+from apps.booking.exceptions import BRException
 from apps.booking.forms import BookingForm
 from apps.booking.models import Booking
 from apps.resources.models import Resource
@@ -363,6 +364,56 @@ class QuerySetTestCase(BookingSetupMixin, TestCase):
         self.assertEqual(Booking.objects.active().last(), None)
         self.assertEqual(Booking.objects.all().last(), tested_booking)
 
+
+class BusinessRulesTestCase(BookingSetupMixin, TestCase):
+    room = None
+    user_1 = None
+    user_2 = None
+    user_admin = None
+
+    @classmethod
+    def setUpClass(cls):
+        cls.room = cls.create_room_resource()
+        cls.user_1 = cls.create_user("1")
+        cls.user_2 = cls.create_user("2")
+        cls.user_admin = cls.create_user("admin", admin=True)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.room.delete()
+        cls.user_1.delete()
+        cls.user_2.delete()
+        cls.user_admin.delete()
+
+    def test_cancel_in_denied_for_past_bookings(self):
+        past_booking = self.create_booking(
+            self.user_1,
+            start=tznow()-timedelta(minutes=55),
+            end=tznow()-timedelta(minutes=25)
+        )
+
+        with self.assertRaises(BRException):
+            past_booking.actions.cancel()
+
+    def test_cancel_is_allowed_on_non_termiated_bookings(self):
+        ongoing_booking = self.create_booking(
+            self.user_1,
+            start=tznow() - timedelta(minutes=55),
+            end=tznow() + timedelta(minutes=25)
+        )
+        future_booking = self.create_booking(
+            self.user_1,
+            start=tznow() + timedelta(minutes=25),
+            end=tznow() + timedelta(minutes=55)
+        )
+
+        ongoing_booking.actions.cancel()
+        ongoing_booking.refresh_from_db()
+        self.assertEqual(ongoing_booking.status, Booking.CANCELLED)
+
+        future_booking.actions.cancel()
+        future_booking.refresh_from_db()
+        self.assertEqual(future_booking.status, Booking.CANCELLED)
 
 class PreSaveChecksTestCase(BookingSetupMixin, TestCase):
     room = None
