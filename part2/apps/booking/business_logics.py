@@ -1,6 +1,6 @@
 from django.utils.timezone import now as tznow
 
-from .exceptions import CannotCancelPastBooking
+from .exceptions import CannotCancelPastBooking, OverUsedResource
 
 
 class BaseBookingExtension:
@@ -33,6 +33,11 @@ class PreSaveChecks(BaseBookingExtension):
     def __init__(self, booking):
         super(PreSaveChecks, self).__init__(booking)
         self.resource = booking.resource
+
+    def check_rules(self):
+        is_new = self.booking.pk is None
+        if is_new and self.exceeds_resource_capacity():
+            raise OverUsedResource()
 
     def exceeds_resource_capacity(self):
         if self.resource.capacity is None:

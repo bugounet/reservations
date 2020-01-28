@@ -1,10 +1,13 @@
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.functional import cached_property
 from django.utils.translation import ugettext_lazy as _
 
 from .queryset import BookingQueryset
-from .business_logics import MetaInfo, PreSaveChecks, BookingActions
+from .business_logics import (
+    MetaInfo,
+    PreSaveChecks,
+    BookingActions,
+)
 
 
 class Booking(models.Model):
@@ -72,9 +75,5 @@ class Booking(models.Model):
         return BookingActions(self)
 
     def save(self, *args, **kwargs):
-        is_new = self.pk is None
-        if is_new and PreSaveChecks(self).exceeds_resource_capacity():
-            raise ValidationError(
-                _("Can't save booking. Resource is overused.")
-            )
+        PreSaveChecks(self).check_rules()
         return super(Booking, self).save(*args, **kwargs)

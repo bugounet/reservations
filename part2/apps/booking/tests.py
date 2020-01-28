@@ -5,11 +5,10 @@ from unittest.mock import Mock
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from django.urls import reverse
 from django.utils.timezone import now as tznow
 
 from apps.booking.business_logics import MetaInfo
-from apps.booking.exceptions import BRException
+from apps.booking.exceptions import BRException, OverUsedResource
 from apps.booking.forms import BookingForm
 from apps.booking.models import Booking
 from apps.resources.models import Resource
@@ -385,7 +384,7 @@ class BusinessRulesTestCase(BookingSetupMixin, TestCase):
         cls.user_2.delete()
         cls.user_admin.delete()
 
-    def test_cancel_in_denied_for_past_bookings(self):
+    def test_cancel_is_denied_for_past_bookings(self):
         past_booking = self.create_booking(
             self.user_1,
             start=tznow()-timedelta(minutes=55),
@@ -415,6 +414,7 @@ class BusinessRulesTestCase(BookingSetupMixin, TestCase):
         future_booking.refresh_from_db()
         self.assertEqual(future_booking.status, Booking.CANCELLED)
 
+
 class PreSaveChecksTestCase(BookingSetupMixin, TestCase):
     room = None
     user_1 = None
@@ -443,7 +443,7 @@ class PreSaveChecksTestCase(BookingSetupMixin, TestCase):
         self.room = self.create_room_resource(capacity=1)
 
         self.create_booking(self.user_1, tznow(), tznow() + timedelta(hours=1))
-        with self.assertRaises(ValidationError):
+        with self.assertRaises(OverUsedResource):
             self.create_booking(
                 self.user_2, tznow(), tznow() + timedelta(hours=1)
             )
