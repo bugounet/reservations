@@ -15,11 +15,14 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js" integrity="sha384-6khuMg9gaYr5AxOqhkVIODVIvm9ynTT5J4V1cfthmT+emCG6yVmEZsRHdxlotUnm" crossorigin="anonymous"></script>
 </head>
 <body>
+<!-- Kept django templated rendering for jsless interface -->
+<noscript>
 {% include "website/components/header.html" with user=request.user%}
 <div class="container page">
     {% block content %}
     {% endblock %}
 </div>
 {% include "website/components/footer.html" with user=request.user %}
+</noscript>
 </body>
 </html>
