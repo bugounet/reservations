@@ -83,6 +83,5 @@ class BookingDeletionView(LoginRequiredMixin, DeleteView):
         """
         self.object = self.get_object()
         success_url = self.get_success_url()
-        self.object.status = 'cancelled'
-        self.object.save(update_fields=['status'])
+        self.object.actions.cancel()
         return HttpResponseRedirect(success_url)
