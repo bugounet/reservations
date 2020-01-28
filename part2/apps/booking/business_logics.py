@@ -1,5 +1,7 @@
 from django.utils.timezone import now as tznow
 
+from .exceptions import CannotCancelPastBooking
+
 
 class BaseBookingExtension:
     def __init__(self, booking):
@@ -52,5 +54,7 @@ class PreSaveChecks(BaseBookingExtension):
 class BookingActions(BaseBookingExtension):
 
     def cancel(self):
+        if self.booking.end_datetime < tznow():
+            raise CannotCancelPastBooking()
         self.booking.status = self.model.CANCELLED
         self.booking.save(update_fields=['status'])

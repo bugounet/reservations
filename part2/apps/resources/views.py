@@ -1,15 +1,16 @@
 from django.utils.timezone import now as tznow
 from rest_framework import viewsets
 
-from .permissions import IsOwnerOrAdmin
-from .models import Booking
-from .serializers import BookingSerializer
+from .permissions import IsAdminOrReadOnly
+from .models import Resource
+from .serializers import ResourceSerializer
 
 
-class BookingViewSet(viewsets.ModelViewSet):
+class ResourceViewSet(viewsets.ModelViewSet):
 
-    queryset = Booking.objects.active()
-    serializer_class = BookingSerializer
+    permission_classes = [IsAdminOrReadOnly]
+    queryset = Resource.objects.all()
+    serializer_class = ResourceSerializer
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
@@ -18,5 +19,3 @@ class BookingViewSet(viewsets.ModelViewSet):
         if instance.end_datetime < tznow():
             raise Exception("Oops!")
         instance.actions.cancel()
-
-    permission_classes = [IsOwnerOrAdmin]

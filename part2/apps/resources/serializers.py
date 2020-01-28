@@ -1,17 +1,19 @@
 from rest_framework import serializers
 
-from .models import Booking
+from apps.booking.serializers import BookingSerializer
+from .models import Resource
 
 
-class BookingSerializer(serializers.HyperlinkedModelSerializer):
+class ResourceSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
-        model = Booking
+        model = Resource
         fields = [
-            'owner',
-            'resource',
-            'start_datetime',
-            'end_datetime',
-            'title',
+            'location',
+            'capacity',
+            'label',
+            'type',
+            'upcoming_bookings',
+            'id'
         ]
 
-    owner = serializers.CharField(source="owner.username")
+    upcoming_bookings = BookingSerializer(many=True, read_only=True)
