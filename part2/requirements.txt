@@ -2,3 +2,4 @@ django==2.2.9
 django-rest-framework
 # filters support for django
 django-filter
+python-social-auth

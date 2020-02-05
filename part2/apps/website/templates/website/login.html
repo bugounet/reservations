@@ -21,7 +21,9 @@
         <input type="submit" class="btn btn-primary" value="{% trans 'login' %}">
         </form>
     </div>
-
+    <a href="{% url 'social:begin' 'github' %}">
+        Connect with GitHub
+    </a>
     <div class="col-12 text-center language-selector">
         {%language 'en-us' %}<a href="{%url 'login' %}">English</a>{%endlanguage %}
         {%language 'fr-fr' %}<a href="{%url 'login' %}">Français</a>{%endlanguage %}
