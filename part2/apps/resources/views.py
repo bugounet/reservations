@@ -8,7 +8,6 @@ from django_filters import rest_framework as filters
 
 from rest_framework import viewsets
 from rest_framework.decorators import action
-from rest_framework.response import Response
 
 from .filters import ResourceFilter
 from .forms import ResourceForm
@@ -82,6 +81,7 @@ class ResourceCreationView(AdminLoginRequiredMixin, CreateView):
 
     def get_queryset(self):
         return Resource.objects.for_user(self.request.user)
+
 
 class ResourceDetailsView(LoginRequiredMixin, DetailView):
     model = Resource
