@@ -19,7 +19,7 @@ from .serializers import BookingSerializer
 class BookingViewSet(viewsets.ModelViewSet):
 
     permission_classes = [IsOwnerOrAdmin]
-    queryset = Booking.objects.active()
+    queryset = Booking.objects.active().order_by('start_datetime')
     serializer_class = BookingSerializer
 
     def perform_create(self, serializer):

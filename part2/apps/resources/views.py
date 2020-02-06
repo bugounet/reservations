@@ -5,6 +5,8 @@ from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
 
 from .forms import ResourceForm
 from .models import Resource
@@ -25,6 +27,28 @@ class ResourceViewSet(viewsets.ModelViewSet):
         if instance.end_datetime < tznow():
             raise Exception("Oops!")
         instance.actions.cancel()
+
+    @action(
+        detail=True,
+        methods=['get'],
+        permission_classes=[IsAdminOrReadOnly]
+    )
+    def bookings(self, request, pk=None):
+        """ Retreive all bookings assigned to the resource
+        """
+        # local import to avoid circular dependencies
+        from apps.booking.serializers import BookingWithoutResourceSerializer
+        from apps.booking.models import Booking
+
+        related_bookings = self.paginate_queryset(
+            Booking.objects
+            .active()
+            .filter(resource_id=pk)
+            .order_by('start_datetime')
+        )
+        serializer = BookingWithoutResourceSerializer(related_bookings, many=True)
+
+        return self.get_paginated_response(serializer.data)
 
 
 class ResourcesListView(LoginRequiredMixin, ListView):

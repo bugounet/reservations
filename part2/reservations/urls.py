@@ -34,7 +34,7 @@ urlpatterns = (
         ),
     ) +
     [
-        path('api', include(api_router.urls)),
+        path('api/', include(api_router.urls)),
         path('', include(website_urls)),
         url(
             r'^social/',
