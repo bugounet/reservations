@@ -4,10 +4,13 @@ from django.views.generic import DetailView, ListView
 from django.views.generic.edit import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
+from django_filters import rest_framework as filters
+
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from .filters import ResourceFilter
 from .forms import ResourceForm
 from .models import Resource
 from .permissions import IsAdminOrReadOnly
@@ -19,6 +22,8 @@ class ResourceViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminOrReadOnly]
     queryset = Resource.objects.all()
     serializer_class = ResourceSerializer
+    filter_backends = (filters.DjangoFilterBackend, )
+    filterset_class = ResourceFilter
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
