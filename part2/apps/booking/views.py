@@ -22,6 +22,14 @@ class BookingViewSet(viewsets.ModelViewSet):
     queryset = Booking.objects.active().order_by('start_datetime')
     serializer_class = BookingSerializer
 
+    def get_queryset(self):
+        return (
+            Booking.objects
+                .active()
+                .for_user(self.request.user)
+                .order_by('start_datetime')
+        )
+
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
