@@ -107,3 +107,37 @@ You can connect the app admin interface using the following credentials:
 | admin    | MyAdmin123! |
 | alice    | MyAlice123! |
 | bob    | MyBob123! |
+
+## Part 2 specific feedbacks
+
+As the tests is going on, I tried my best to ship a working react app, 
+however, there is still a lot of room for improvement. For example, the 
+system often fetchs all data at once (using limit=0 parameter on backend 
+queries) mainly because ading pagination and much more logic in some of these
+ components would have taken me a big amount of time.
+
+Here is a list of things I would have loved to do better under other 
+circumstances:
+
+- Replace the fixed pagination size of 10 items per page by a flexible one
+- Use TypeScript with strong data typing to help me forge valid my inputs. For 
+now the middleware has a lot of boilerplate to cast data to datesn 
+hyperlinks etc. it is by far the worst par of the react app.
+- split complex components a little more (for example follow the 
+"controller/presentation" pattern)
+- I chose to use django-filter app to help me filtering DRF's views but it 
+was not mandatory for easy filters like type__contains & location__startswith
+- The react-big-calendar component has a really strong API capable of doing 
+the whole APP only by giving it bookings & resources inputs, however, the 
+documentation looks pretty outdated making my learning of the compoenent 
+really hard. I finally chose to stick with an "easy plan" using it only events 
+display.
+- No unit test were made on react-app. This is bad. I know. I chose to trust 
+my manual testing since the app only has 3 to 4 pages. I could have made a few for 
+the complex auto-complete resource search component and other functionally 
+complex components but I doubt the test is about asserting I can write unit 
+tests here.
+- React app is the main view while django's rendered data is left to the 
+<noscript> tag. This was to me a good way to keep using django's rendered 
+views and make a more exhaustive usage of react than simply displaying 1 
+component.
