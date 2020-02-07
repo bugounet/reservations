@@ -117,7 +117,29 @@ class requestMiddleware {
                 )
             };
         });
-    }
+    };
+
+    findResourceByType(type) {
+        return fetch(
+            `http://localhost:8000/api/resource/?type=${type}&limit=0`,
+            {
+                headers: {
+                    Authorization: this.auth
+                }
+            }
+        ).then((response) => response.json());
+    };
+
+    findResourceByLocation(location) {
+        return fetch(
+            `http://localhost:8000/api/resource/?location=${location}&limit=0`,
+            {
+                headers: {
+                    Authorization: this.auth
+                }
+            }
+        ).then((response) => response.json());
+    };
 };
 
 export default new requestMiddleware('Basic YWRtaW46TXlBZG1pbjEyMyE=', 'admin')

@@ -5,6 +5,7 @@ import {Paper, TextField, Button, Container, NativeSelect, makeStyles} from '@ma
 import LoadingPage from '../components/LoadingPage';
 import ErrorPage from '../components/ErrorPage';
 import requestMiddleware from "../requestMiddleware";
+import AutoCompletingResourceSelector from '../components/AutoCompletingResourceSelector';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -26,9 +27,11 @@ const BookingPage = (props) => {
     const classes = useStyles();
     const { id: queryId } = useParams();
     const bookingId = (queryId !== undefined) ? Number(queryId) : null;
+    const defaultStartDate = new Date();
+    const defaultEndDate = new Date();
+    defaultEndDate.setHours(defaultEndDate.getHours()+1)
 
     const [booking, setBooking] = useState(null);
-    const [resources, setResources] = useState([]);
     const [error, setError] = useState("");
     const [redirect, setRedirect] = useState("");
     const [formMessages, setFormMessages] = useState("");
@@ -40,24 +43,16 @@ const BookingPage = (props) => {
     useEffect(() => {
         // does not support IDs starting at 0. hopefully PgSQL or sqlite3 don't
         // start at 0.
-        Promise.all([
-            requestMiddleware.getResources(),
-            ...((bookingId) ?
-                [requestMiddleware.getBookingFromId(bookingId)] :
-                [Promise.resolve({
-                    title: '',
-                    start_datetime: new Date(),
-                    end_datetime: new Date(),
-                    resource: null,
-                })]
-            )
-        ]).then(([resourcesResponse, booking]) => {
-            setResources(resourcesResponse.results);
-            setBooking({
-                ...booking,
-                start_datetime: new Date(booking.start_datetime),
-                end_datetime: new Date(booking.end_datetime),
-            });
+        ((bookingId) ?
+            requestMiddleware.getBookingFromId(bookingId) :
+            Promise.resolve({
+                title: '',
+                start_datetime: defaultStartDate,
+                end_datetime: defaultEndDate,
+                resource: null,
+            })
+        ).then((booking) => {
+            setBooking(booking);
             setLoading(false);
         }).catch((error) => {
             setError("Something went wrong while getting this booking.");
@@ -107,10 +102,10 @@ const BookingPage = (props) => {
 
     // rendering helpers
     const allowSaveAction = (!!bookingId && modified) || (!bookingId && complete);
-    const defaultStartDate = moment(
+    const defaultStartDateValue = moment(
         (bookingId !== null) ? booking.start_datetime : new Date()
     ).format('YYYY-MM-DDTHH:mm');
-    const defaultEndDate = moment(
+    const defaultEndDateValue = moment(
         (bookingId !== null) ? booking.end_datetime : new Date()
     ).format('YYYY-MM-DDTHH:mm');
     const isEditable = !bookingId || moment(booking.end_datetime) > new Date();
@@ -134,19 +129,11 @@ const BookingPage = (props) => {
                               readOnly: !isEditable,
                           }}
                         />
-                        <NativeSelect
-                          value={booking.resource || ""}
-                          onChange={onChange}
-                          name="resource"
-                          inputProps={{
-                            name: 'resource',
-                          }}
-                        >
-                          <option value="" />
-                            {resources.map((resource)=> (
-                                <option value={resource.id} key={resource.id}>{resource.label}</option>
-                            ))}
-                        </NativeSelect>
+                        <AutoCompletingResourceSelector
+                            value={booking.resource || null}
+                            onChange={onChange}
+                            name="resource"
+                        />
                         {
                             /* Could use sexy pickers but I want to ease my
                             dev so I would do it in an upcoming release */
@@ -156,7 +143,7 @@ const BookingPage = (props) => {
                             label="Start date"
                             name="start_datetime"
                             type="datetime-local"
-                            value={defaultStartDate}
+                            value={defaultStartDateValue}
                             className={classes.textField}
                             onChange={onChange}
                             InputLabelProps={{
@@ -169,7 +156,7 @@ const BookingPage = (props) => {
                             label="End date"
                             name="end_datetime"
                             type="datetime-local"
-                            value={defaultEndDate}
+                            value={defaultEndDateValue}
                             className={classes.textField}
                             onChange={onChange}
                             InputLabelProps={{
