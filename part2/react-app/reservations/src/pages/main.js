@@ -6,7 +6,8 @@ import React from 'react';
 const MainPage = () => {
     return (
         <div className="page">
-            <h1>Reservations</h1>
+            Hello {window.userName}. Here you will be able to find the
+            resources you want to book and the ones you already booked.
         </div>
     )
 }

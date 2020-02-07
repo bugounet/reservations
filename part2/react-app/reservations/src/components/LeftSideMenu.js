@@ -37,7 +37,7 @@ const MenuContent = (props) => {
 			</List>
 			<Divider />
 			<List>
-				<ListItem component={Link} to="/logout" key="logout" onClick={toggleDrawer}>
+				<ListItem onClick={()=> window.location = '/logout'} key="logout">
 					<ListItemText primary="Logout" />
 				</ListItem>
 			</List>
