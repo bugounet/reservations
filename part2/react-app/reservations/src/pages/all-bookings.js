@@ -49,6 +49,8 @@ const AllBookingsPage = () => {
             setLoading(false);
         });
     };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => loadData(query.get('page') || 0), []);
     if (loading) return <LoadingPage />;
 

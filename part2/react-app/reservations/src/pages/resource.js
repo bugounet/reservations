@@ -34,6 +34,7 @@ const ResourcePage = () => {
 
     // on page load: fetch resource's related bookings. When resourceId
     // changed, update this list.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(() => loadBookings(), [resourceId]);
 
     if(loading) return <LoadingPage />;

@@ -45,7 +45,11 @@ class requestMiddleware {
                     'Content-Type': 'application/json',
                 },
                 method: 'PUT',
-                body: JSON.stringify(data)
+                body: JSON.stringify({
+                    ...data,
+                    resource: isNaN(Number(data.resource))?
+                        data.resource: `/api/resource/${data.resource}/`,
+                })
             }
         ).then((response) => response.json()).then(
             data => this.castServerResponseToRelevantFormat(data)
@@ -85,6 +89,17 @@ class requestMiddleware {
 
     getAllResources() {
         return this.getResources(0, 0);
+    };
+
+    getResourceFromId(bookingId) {
+        return fetch(
+            `http://localhost:8000/api/resource/${bookingId}/`,
+            {
+                headers: {
+                    Authorization: this.auth
+                }
+            }
+        ).then((response) => response.json());
     };
 
     getResources(page, limit=10) {

@@ -1,13 +1,13 @@
 /**
  * Created by bugounet on 06/02/2020.
  */
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {TextField, Menu, List, ListItem, ListItemText} from '@material-ui/core';
 import requestMiddleware from '../requestMiddleware';
 
 const AutoCompletingResourceSelector = (props) => {
     // constants
-    const {value: inputValue, onChange, label, name} = props;
+    const {value: inputValue, onChange, label, name, readOnly} = props;
 
     // state
     const [value, setValue] = useState(inputValue);
@@ -17,6 +17,7 @@ const AutoCompletingResourceSelector = (props) => {
 
     // Hooks & actions
     const activateInput = event => {
+        if (readOnly) return;
         setAnchorEl(event.currentTarget.parentElement);
         setEditing(true);
     };
@@ -60,6 +61,12 @@ const AutoCompletingResourceSelector = (props) => {
         })
     };
 
+    useEffect(() => {
+        requestMiddleware.getResourceFromId(inputValue).then((resource)=>{
+            setValue(resource.label);
+        });
+    }, [inputValue]);
+
     //template helpers
     const resultsList = resources.map((resource) => (
         <ListItem key={resource.id}>
@@ -79,6 +86,7 @@ const AutoCompletingResourceSelector = (props) => {
               name={name}
               value={value}
               onClick={activateInput}
+              placeholder="Resource type or location"
               InputProps={{
                   readOnly: true,
               }}

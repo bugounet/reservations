@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {useParams, Redirect} from 'react-router-dom';
 import moment from 'moment'
-import {Paper, TextField, Button, Container, NativeSelect, makeStyles} from '@material-ui/core';
+import {Paper, TextField, Button, Container, makeStyles} from '@material-ui/core';
 import LoadingPage from '../components/LoadingPage';
 import ErrorPage from '../components/ErrorPage';
 import requestMiddleware from "../requestMiddleware";
@@ -27,9 +27,6 @@ const BookingPage = (props) => {
     const classes = useStyles();
     const { id: queryId } = useParams();
     const bookingId = (queryId !== undefined) ? Number(queryId) : null;
-    const defaultStartDate = new Date();
-    const defaultEndDate = new Date();
-    defaultEndDate.setHours(defaultEndDate.getHours()+1)
 
     const [booking, setBooking] = useState(null);
     const [error, setError] = useState("");
@@ -41,6 +38,10 @@ const BookingPage = (props) => {
 
     // load data on page first display
     useEffect(() => {
+        // create default dates
+        const defaultStartDate = new Date();
+        const defaultEndDate = new Date();
+        defaultEndDate.setHours(defaultEndDate.getHours()+1);
         // does not support IDs starting at 0. hopefully PgSQL or sqlite3 don't
         // start at 0.
         ((bookingId) ?
@@ -102,13 +103,16 @@ const BookingPage = (props) => {
 
     // rendering helpers
     const allowSaveAction = (!!bookingId && modified) || (!bookingId && complete);
+    const now = new Date()
+    const later = new Date()
+    later.setHours(later.getHours()+1);
     const defaultStartDateValue = moment(
-        (bookingId !== null) ? booking.start_datetime : new Date()
+        (bookingId !== null) ? booking.start_datetime : now
     ).format('YYYY-MM-DDTHH:mm');
     const defaultEndDateValue = moment(
-        (bookingId !== null) ? booking.end_datetime : new Date()
+        (bookingId !== null) ? booking.end_datetime : later
     ).format('YYYY-MM-DDTHH:mm');
-    const isEditable = !bookingId || moment(booking.end_datetime) > new Date();
+    const isEditable = !bookingId || moment(booking.end_datetime) > now;
 
     return (
         <div className="page">
@@ -132,6 +136,7 @@ const BookingPage = (props) => {
                         <AutoCompletingResourceSelector
                             value={booking.resource || null}
                             onChange={onChange}
+                            readOnly={!isEditable}
                             name="resource"
                         />
                         {
