@@ -157,4 +157,4 @@ class requestMiddleware {
     };
 };
 
-export default new requestMiddleware('Basic YWRtaW46TXlBZG1pbjEyMyE=', 'admin')
+export default new requestMiddleware(window.userAccessToken, window.userName);

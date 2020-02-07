@@ -16,6 +16,17 @@ python manage.py migrate
 python manage.py test
 # load admins, basic-users and testing assets from dumped data
 python manage.py loaddata fixtures/*.json
+```
+for part 2 ONLY you'll need two extra steps to build the react app:
+```
+# build react app and inject built file into app's static files
+./build-and-inject
+# collect staticfiles
+DEBUG=no python manage.py collectstatic --noinput
+```
+
+Then you can run the app
+```
 python manage.py runserver
 ```
 
@@ -119,6 +130,8 @@ queries) mainly because ading pagination and much more logic in some of these
 Here is a list of things I would have loved to do better under other 
 circumstances:
 
+- The API is relying on simple never ending tokens. And the interface passes it 
+to the front-end using clear text. We must use something else to secure this API (like JWT for example).
 - Replace the fixed pagination size of 10 items per page by a flexible one
 - Use TypeScript with strong data typing to help me forge valid my inputs. For 
 now the middleware has a lot of boilerplate to cast data to datesn 
