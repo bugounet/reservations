@@ -1,0 +1,25 @@
+{%extends "website/base-with-react.html" %}
+{% load i18n %}
+
+{%block content%}
+{% language request.user.preferences.language %}
+<h1>{% trans "Bookings" %}</h1>
+{% include "booking/components/base-filters.html" with user=request.user%}
+<table class="table">
+    <thead class="thead-dark">
+        <th>{% trans "Title" %}</th>
+        <th>{% trans "Start" %}</th>
+        <th>{% trans "End" %}</th>
+        <th>{% trans "Resource" %}</th>
+        {%if request.user.is_staff %}
+        <th>{% trans "Owner" %}</th>
+        {%endif%}
+    </thead>
+    {%for booking in object_list%}
+        {%include "booking/components/booking-listitem.html" with booking=booking current_user=request.user%}
+    {%endfor%}
+</table>
+
+{% include "website/components/paginator.html" with page=page_obj paginator=paginator user=request.user%}
+{% endlanguage %}
+{%endblock%}}

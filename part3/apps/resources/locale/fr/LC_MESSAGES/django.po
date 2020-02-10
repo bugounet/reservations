@@ -1,0 +1,85 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-01-27 10:00+0000\n"
+"PO-Revision-Date: 2020-01-27 10:38+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 2.2.4\n"
+
+#: apps/resources/models.py:17
+#: apps/resources/templates/resources/resource_details.html:10
+#: apps/resources/templates/resources/resources_list.html:21
+msgid "Location"
+msgstr "Localisation"
+
+#: apps/resources/models.py:21
+msgid "Resource location"
+msgstr "Localisation de la ressource"
+
+#: apps/resources/models.py:31
+#: apps/resources/templates/resources/resource_details.html:9
+#: apps/resources/templates/resources/resources_list.html:20
+msgid "Capacity"
+msgstr "Capacité"
+
+#: apps/resources/models.py:34
+msgid "Resource capacity in number of persons."
+msgstr "Capacité de la resources en nombre de personnes."
+
+#: apps/resources/models.py:39
+#: apps/resources/templates/resources/resources_list.html:18
+msgid "Label"
+msgstr "Libelé"
+
+#: apps/resources/models.py:46
+#: apps/resources/templates/resources/resource_details.html:8
+#: apps/resources/templates/resources/resources_list.html:19
+msgid "Type"
+msgstr "Type"
+
+#: apps/resources/models.py:48
+msgid "Resource type. eg: desk, room, screen, pen, parking spot"
+msgstr "Type de ressource. Ex: bureau, salle, écran, stylo, place de parking"
+
+#: apps/resources/templates/resources/resource_create.html:6
+#: apps/resources/templates/resources/resources_list.html:11
+msgid "Create resource"
+msgstr "Créer une ressource"
+
+#: apps/resources/templates/resources/resource_create.html:10
+msgid "Add"
+msgstr "Ajouter"
+
+#: apps/resources/templates/resources/resource_details.html:12
+msgid "Bookings"
+msgstr "Réservations"
+
+#: apps/resources/templates/resources/resource_details.html:16
+#, python-format
+msgid ""
+"\n"
+"Booked by %(username)s from %(start)s to %(end)s: %(title)s\n"
+"        "
+msgstr ""
+"\n"
+"Réservé par %(username)s de %(start)s à %(end)s: %(title)s\n"
+"        "
+
+#: apps/resources/templates/resources/resource_details.html:21
+msgid "Not booked yet"
+msgstr "Pas encore réservé"
+
+#: apps/resources/templates/resources/resources_list.html:6
+msgid "Resources"
+msgstr "Ressources"

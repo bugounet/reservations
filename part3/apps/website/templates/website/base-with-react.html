@@ -1,0 +1,22 @@
+{% extends "website/react-index.html" %}
+{% load static %}
+
+{% block head %}
+    {% include "website/head.html" %}
+    <script>
+        window.userAccessToken = 'Token {{ request.user.auth_token.key }}';
+        window.userName = '{{ request.user.username }}';
+        window.userIsStaff = '{{ request.user.is_staff }}';
+    </script>
+{% endblock %}
+
+{% block body %}
+    <!-- Kept django templated rendering for jsless interface -->
+    <noscript id="django-rendered">
+    {% include "website/components/header.html" with user=request.user%}
+    <div class="container page">
+        {% block content %}{% endblock %}
+    {% include "website/components/footer.html" with user=request.user %}
+    </noscript>
+
+{% endblock %}

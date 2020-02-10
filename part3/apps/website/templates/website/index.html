@@ -1,0 +1,14 @@
+{% extends "website/base-with-react.html" %}
+{% load i18n %}
+
+{% block content %}
+{% language request.user.preferences.language %}
+<h1>Reservations</h1>
+<p>
+{% blocktrans with username=user.username %}
+Hello {{username}}. Here you will be able to find the resources you want to
+    book and the ones you already booked.
+{%endblocktrans%}
+</p>
+{% endlanguage %}
+{% endblock %}

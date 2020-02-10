@@ -1,0 +1,56 @@
+[
+{
+    "model": "auth.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$150000$6YoNByyLT0RM$Y/yMGPI3eGhlnvaUmUPichYztVHDTCP0ji2rJxQAE3E=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "alice",
+        "first_name": "Alice",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2020-01-27T14:05:41Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "auth.user",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$150000$SU7AmE9gwcHr$ZmaaGGHBkGRmmDUKF4lsyYbWewYmV4F9A7mVCKm5tYw=",
+        "last_login": null,
+        "is_superuser": false,
+        "username": "bob",
+        "first_name": "",
+        "last_name": "",
+        "email": "",
+        "is_staff": false,
+        "is_active": true,
+        "date_joined": "2020-01-27T14:06:06.078Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "profiles.userpreference",
+    "pk": 2,
+    "fields": {
+        "user": 2,
+        "language": "fr-fr",
+        "_preferred_timezone": "America/Montreal"
+    }
+},
+{
+    "model": "profiles.userpreference",
+    "pk": 3,
+    "fields": {
+        "user": 3,
+        "language": "en-us",
+        "_preferred_timezone": "Asia/Hong_Kong"
+    }
+}
+]

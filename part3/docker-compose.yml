@@ -1,0 +1,19 @@
+version: '2.1'
+services:
+  websocket:
+    image: reservations-socket:latest
+    expose:
+      - "8001"
+    ports:
+    - "8001:8001"
+    restart: always
+    healthcheck:
+      disable: true
+
+  api:
+    image: reservations-api:latest
+    expose:
+      - "8000"
+    restart: always
+    ports:
+      - "8000:8000"

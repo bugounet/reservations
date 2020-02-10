@@ -1,0 +1,4 @@
+env
+react-app/reservations/node_modules
+react-app/reservations/build
+static

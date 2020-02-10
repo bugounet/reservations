@@ -1,0 +1,37 @@
+{% load i18n %}
+{% language request.user.preferences.language %}
+<div class="row">
+    <dt class="col-md-3">
+        {% trans "Title" %}
+    </dt>
+    <dd class="col-md-9">
+        {{ booking.title }}
+    </dd>
+    <dt class="col-md-3">
+        {% trans "Start" %}
+    </dt>
+    <dd class="col-md-9">
+        {{ booking.start_datetime }}
+    </dd>
+    <dt class="col-md-3">
+        {% trans "End" %}
+    </dt>
+    <dd class="col-md-9">
+        {{ booking.end_datetime }}
+    </dd>
+    <dt class="col-md-3">
+        {% trans "Resource" %}
+    </dt>
+    <dd class="col-md-9">
+        {{ booking.resoource.label }}
+    </dd>
+    {%if request.user.is_staff %}
+    <dt class="col-md-3">
+        {% trans "Owner" %}
+    </dt>
+    <dd class="col-md-9">
+        {{ booking.owner.username }}
+    </dd>
+    {%endif%}
+</div>
+{% endlanguage %}

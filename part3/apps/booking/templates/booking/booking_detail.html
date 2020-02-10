@@ -1,0 +1,15 @@
+{%extends "website/base-with-react.html" %}
+{% load i18n %}
+{% load tz %}
+
+{%block content%}
+{% language request.user.preferences.language %}
+<h1>{% trans "Edit booking" %}</h1>
+{% if booking.meta_info.is_future %}
+    {% include 'booking/components/booking-details-write.html' with booking=booking request=request %}
+{%else %}
+    {% include 'booking/components/booking-details-read.html' with booking=booking request=request %}
+{%endif%}
+{% include 'booking/components/cancel-button.html' with booking=booking user=request.user%}
+{%endlanguage%}
+{%endblock%}}
