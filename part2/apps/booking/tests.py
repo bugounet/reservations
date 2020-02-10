@@ -5,6 +5,7 @@ from unittest.mock import Mock
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.test import TestCase
+from django.urls import reverse
 from django.utils.timezone import now as tznow
 
 from apps.booking.business_logics import MetaInfo
@@ -13,7 +14,10 @@ from apps.booking.forms import BookingForm
 from apps.booking.models import Booking
 from apps.resources.models import Resource
 
-class BookingSetupMixin():
+
+MODEL_BACKEND = 'django.contrib.auth.backends.ModelBackend'
+
+class BookingSetupMixin:
     @classmethod
     def create_room_resource(cls, capacity=None):
         return Resource.objects.create(
@@ -208,6 +212,7 @@ class BookingFormTestCase(BookingSetupMixin, TestCase):
         with self.assertRaises(ValidationError):
             form.clean()
 
+
 class ViewsTestCase(BookingSetupMixin, TestCase):
     room = None
     user_1 = None
@@ -231,7 +236,7 @@ class ViewsTestCase(BookingSetupMixin, TestCase):
     def test_display_owner_bookings(self):
         # assuming I'm logged in as booking owner
         booking = self.create_booking(self.user_1)
-        self.client._login(booking.owner)
+        self.client._login(booking.owner, backend=MODEL_BACKEND)
 
         # then when I access the booking details
         response = self.client.get(
@@ -249,7 +254,7 @@ class ViewsTestCase(BookingSetupMixin, TestCase):
     def test_display_neighbourg_booking_fails_on_40(self):
         # assuming I'm not logged in as booking owner but someone else
         booking = self.create_booking(self.user_1)
-        self.client._login(self.user_2)
+        self.client._login(self.user_2, backend=MODEL_BACKEND)
 
         # then when I access the booking details
         response = self.client.get(
@@ -263,7 +268,7 @@ class ViewsTestCase(BookingSetupMixin, TestCase):
     def test_display_others_booking_succeeds_as_admin(self):
         # assuming I'm logged in as admin
         booking = self.create_booking(self.user_1)
-        self.client._login(self.user_admin)
+        self.client._login(self.user_admin, backend=MODEL_BACKEND)
 
         # then when I access the booking details
         response = self.client.get(
