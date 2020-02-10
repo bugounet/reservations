@@ -154,3 +154,44 @@ tests here.
 <noscript> tag. This was to me a good way to keep using django's rendered 
 views and make a more exhaustive usage of react than simply displaying 1 
 component.
+
+## Part 3 explanations
+To implement the nofification system I chose the dummy broadcast approach: 
+receive an event an push it to all listeners. This is by far the easiest 
+event though it's not the recommended one because of perfocances and security
+issues. Here is a diagram describing how a Booking update could trigger a 
+page refresh on our react - clients.
+
+![database-diagram](docs/reservations-hooking.png)
+
+### Build
+- Build docker image
+Go to the part3 root directory. Run commands:
+```
+# Build docker image for API
+docker build --target API -t reservations-api .
+# run it to check it works
+docker run -p 8000:8000 -t reservations-api
+# curl to check service is up (should return JSON content)
+curl http://localhost:8000/api/resource/
+# Hit ^C to stop the docker run command and continue.
+# Build the websoket broadcaster
+docker build --target WSOCKET -t reservations-socket .
+# run it to check it works
+docker run -p 8001:8001 -t reservations-socket
+
+# Then simply use docker-compose to run all at once
+docker-compose up
+# Finally : simply access http://localhost:8000 to go to the website.
+```
+
+### Still left to do on part 3:
+When pushing an update on a booking, the websocket broadcaster receives a 
+message containing "{booking-id}//{resource-id}" and broadcasts it as-it-is 
+to all listeners. I didn't have time to:
+- Trigger a data refresh on react app even though I had time to create an app
+ context.
+- Put some more filtering logic into the socket-server to avoid broadcasting 
+too many data (imagine up to 1000 computers listening. I wouldn't love to 
+hear about something I don't watch every 5 ms because the broacaster it too 
+lazy. Further it could contain potential data that must not be sent)
