@@ -1,10 +1,13 @@
 from datetime import timedelta
 from random import randint
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+from django.test import SimpleTestCase
 from django.test import TestCase
+from django.test.utils import override_settings
+from django.urls import reverse
 from django.utils.timezone import now as tznow
 
 from apps.booking.business_logics import MetaInfo
@@ -13,7 +16,12 @@ from apps.booking.forms import BookingForm
 from apps.booking.models import Booking
 from apps.resources.models import Resource
 
-class BookingSetupMixin():
+
+MODEL_BACKEND = 'django.contrib.auth.backends.ModelBackend'
+
+
+@override_settings(DISABLE_WEBOSCKETS=True)
+class BookingSetupMixin(SimpleTestCase):
     @classmethod
     def create_room_resource(cls, capacity=None):
         return Resource.objects.create(
@@ -37,6 +45,8 @@ class BookingSetupMixin():
             end_datetime=end or random_end
         )
 
+
+@override_settings(DISABLE_WEBOSCKETS=True)
 class BookingCascadeRemovalTestCase(TestCase):
     """ Make sure the bookings are always removed if their owner is removed
     or if the resource is removed.
@@ -57,6 +67,7 @@ class BookingCascadeRemovalTestCase(TestCase):
             title=f"Booking number {test_number}"
         )
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_auto_remove_on_user_deletion(self):
         # assuming
         booking = self.create_booking()
@@ -67,6 +78,7 @@ class BookingCascadeRemovalTestCase(TestCase):
         # Then
         self.assertFalse(Booking.objects.filter(pk=booking.pk).exists())
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_auto_remove_on_resource_deletion(self):
         # assuming
         booking = self.create_booking()
@@ -98,6 +110,7 @@ class BookingManagerTestCase(BookingSetupMixin, TestCase):
         cls.user_2.delete()
         cls.user_admin.delete()
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_booking_for_user_returns_all_bookings_when_admin(self):
         # assuming you have 1 booking on user 1 and 2 bookings on user 2
         self.create_booking(self.user_1)
@@ -106,6 +119,7 @@ class BookingManagerTestCase(BookingSetupMixin, TestCase):
 
         self.assertEqual(Booking.objects.for_user(self.user_admin).count(), 3)
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_booking_for_user_only_features_my_bookings(self):
         # assuming you have 1 booking on user 1 and 2 bookings on user 2
         self.create_booking(self.user_1)
@@ -117,6 +131,7 @@ class BookingManagerTestCase(BookingSetupMixin, TestCase):
             Booking.objects.for_user(self.user_1)[0].owner_id,
             self.user_1.pk
         )
+
 
 class ModelMetaInfoAndPropertiesTestCase(BookingSetupMixin, TestCase):
     room = None
@@ -138,23 +153,27 @@ class ModelMetaInfoAndPropertiesTestCase(BookingSetupMixin, TestCase):
         cls.user_2.delete()
         cls.user_admin.delete()
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_model_get_aboslute_url(self):
         booking = self.create_booking(self.user_1)
 
         self.assertEqual(booking.get_absolute_url(), f'/booking/{booking.pk}')
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_meta_info_is_over_when_end_date_has_passed(self):
         mocked_booking = Mock()
         mocked_booking.end_datetime = tznow() - timedelta(hours=1)
 
         self.assertTrue(MetaInfo(mocked_booking).is_over())
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_meta_info_is_over_when_end_date_is_in_the_future(self):
         mocked_booking = Mock()
         mocked_booking.end_datetime = tznow()+timedelta(hours=1)
 
         self.assertFalse(MetaInfo(mocked_booking).is_over())
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_meta_infos_is_ongoing_when_started_but_not_ended(self):
         mocked_booking = Mock()
         mocked_booking.start_datetime = tznow() - timedelta(hours=1)
@@ -162,6 +181,7 @@ class ModelMetaInfoAndPropertiesTestCase(BookingSetupMixin, TestCase):
 
         self.assertTrue(MetaInfo(mocked_booking).is_ongoing())
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_meta_infos_is_ongoing_when_started_and_ended(self):
         mocked_booking = Mock()
         mocked_booking.start_datetime = tznow() - timedelta(hours=2)
@@ -169,12 +189,14 @@ class ModelMetaInfoAndPropertiesTestCase(BookingSetupMixin, TestCase):
 
         self.assertFalse(MetaInfo(mocked_booking).is_ongoing())
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_meta_infos_is_ongoing_when_not_started_yet(self):
         mocked_booking = Mock()
         mocked_booking.start_datetime = tznow() + timedelta(hours=1)
         mocked_booking.end_datetime = tznow() + timedelta(hours=2)
 
         self.assertFalse(MetaInfo(mocked_booking).is_ongoing())
+
 
 class BookingFormTestCase(BookingSetupMixin, TestCase):
     room = None
@@ -196,6 +218,7 @@ class BookingFormTestCase(BookingSetupMixin, TestCase):
         cls.user_2.delete()
         cls.user_admin.delete()
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_end_date_before_Start_date_is_refused(self):
         booking = self.create_booking(self.user_1)
 
@@ -207,6 +230,7 @@ class BookingFormTestCase(BookingSetupMixin, TestCase):
 
         with self.assertRaises(ValidationError):
             form.clean()
+
 
 class ViewsTestCase(BookingSetupMixin, TestCase):
     room = None
@@ -228,10 +252,11 @@ class ViewsTestCase(BookingSetupMixin, TestCase):
         cls.user_2.delete()
         cls.user_admin.delete()
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_display_owner_bookings(self):
         # assuming I'm logged in as booking owner
         booking = self.create_booking(self.user_1)
-        self.client._login(booking.owner)
+        self.client._login(booking.owner, backend=MODEL_BACKEND)
 
         # then when I access the booking details
         response = self.client.get(
@@ -246,10 +271,11 @@ class ViewsTestCase(BookingSetupMixin, TestCase):
             [repr(booking)]
         )
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_display_neighbourg_booking_fails_on_40(self):
         # assuming I'm not logged in as booking owner but someone else
         booking = self.create_booking(self.user_1)
-        self.client._login(self.user_2)
+        self.client._login(self.user_2, backend=MODEL_BACKEND)
 
         # then when I access the booking details
         response = self.client.get(
@@ -260,10 +286,11 @@ class ViewsTestCase(BookingSetupMixin, TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertIsNone(response.context.get('booking'))
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_display_others_booking_succeeds_as_admin(self):
         # assuming I'm logged in as admin
         booking = self.create_booking(self.user_1)
-        self.client._login(self.user_admin)
+        self.client._login(self.user_admin, backend=MODEL_BACKEND)
 
         # then when I access the booking details
         response = self.client.get(
@@ -277,6 +304,7 @@ class ViewsTestCase(BookingSetupMixin, TestCase):
             Booking.objects.filter(pk=response.context['booking'].pk),
             [repr(booking)]
         )
+
 
 class QuerySetTestCase(BookingSetupMixin, TestCase):
     room = None
@@ -298,6 +326,7 @@ class QuerySetTestCase(BookingSetupMixin, TestCase):
         cls.user_2.delete()
         cls.user_admin.delete()
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_past_bookings(self):
         tested_booking = self.create_booking(
             self.user_1,
@@ -307,6 +336,7 @@ class QuerySetTestCase(BookingSetupMixin, TestCase):
 
         self.assertEqual(Booking.objects.past().first(), tested_booking)
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_upcoming_bookings(self):
         tested_booking = self.create_booking(
             self.user_1,
@@ -319,6 +349,7 @@ class QuerySetTestCase(BookingSetupMixin, TestCase):
             tested_booking
         )
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_current_bookings(self):
         tested_booking = self.create_booking(
             self.user_1,
@@ -331,6 +362,7 @@ class QuerySetTestCase(BookingSetupMixin, TestCase):
             tested_booking
         )
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_get_overlapping_left_bookings(self):
         tested_booking = self.create_booking(
             self.user_1,
@@ -346,6 +378,7 @@ class QuerySetTestCase(BookingSetupMixin, TestCase):
             tested_booking
         )
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_get_overlapping_right_bookings(self):
         tested_booking = self.create_booking(
             self.user_1,
@@ -361,6 +394,7 @@ class QuerySetTestCase(BookingSetupMixin, TestCase):
             tested_booking
         )
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_get_overlapping_middle_bookings(self):
         tested_booking = self.create_booking(
             self.user_1,
@@ -376,6 +410,7 @@ class QuerySetTestCase(BookingSetupMixin, TestCase):
             tested_booking
         )
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_get_overlapping_bigger_bookings(self):
         tested_booking = self.create_booking(
             self.user_1,
@@ -391,6 +426,7 @@ class QuerySetTestCase(BookingSetupMixin, TestCase):
             tested_booking
         )
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_get_overlapping_none_left_bookings(self):
         tested_booking = self.create_booking(
             self.user_1,
@@ -406,6 +442,7 @@ class QuerySetTestCase(BookingSetupMixin, TestCase):
             tested_booking
         )
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_get_overlapping_none_right_bookings(self):
         tested_booking = self.create_booking(
             self.user_1,
@@ -421,6 +458,7 @@ class QuerySetTestCase(BookingSetupMixin, TestCase):
             tested_booking
         )
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_booking_status(self):
         # Assuming we have a booking. it is active as a default
         tested_booking = self.create_booking(
@@ -458,6 +496,7 @@ class BusinessRulesTestCase(BookingSetupMixin, TestCase):
         cls.user_2.delete()
         cls.user_admin.delete()
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_cancel_is_denied_for_past_bookings(self):
         past_booking = self.create_booking(
             self.user_1,
@@ -468,6 +507,7 @@ class BusinessRulesTestCase(BookingSetupMixin, TestCase):
         with self.assertRaises(BRException):
             past_booking.actions.cancel()
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_cancel_is_allowed_on_non_termiated_bookings(self):
         ongoing_booking = self.create_booking(
             self.user_1,
@@ -507,12 +547,14 @@ class PreSaveChecksTestCase(BookingSetupMixin, TestCase):
         cls.user_2.delete()
         cls.user_admin.delete()
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_book_twice_the_same_resource(self):
         self.room = self.create_room_resource(capacity=None)
 
         self.create_booking(self.user_1, tznow(), tznow()+timedelta(hours=1))
         self.create_booking(self.user_2, tznow(), tznow()+timedelta(hours=1))
 
+    @override_settings(DISABLE_WEBOSCKETS=True)
     def test_book_twice_the_same_resource_when_it_has_only_one_spot(self):
         self.room = self.create_room_resource(capacity=1)
 
@@ -521,3 +563,22 @@ class PreSaveChecksTestCase(BookingSetupMixin, TestCase):
             self.create_booking(
                 self.user_2, tznow(), tznow() + timedelta(hours=1)
             )
+
+
+class PostSaveSendsSocketEventTestCase(BookingSetupMixin, TestCase):
+    @override_settings(DISABLE_WEBOSCKETS=False)
+    def test_send_websocket_event(self):
+        self.user_1 = self.create_user("1")
+        self.room = self.create_room_resource(capacity=None)
+
+        mocked_socket = Mock()
+
+        with patch('apps.booking.hooks.create_connection') as create_connection:
+            create_connection.return_value = mocked_socket
+            booking = self.create_booking(
+                self.user_1, tznow(), tznow()+timedelta(hours=1)
+            )
+            mocked_socket.send.assert_called_once_with(
+                b'%d//%d'%(booking.pk, booking.resource_id)
+            )
+            mocked_socket.close.assert_called_once()
