@@ -1,4 +1,4 @@
-django==2.2.9
+django==2.2.18
 django-rest-framework
 # filters support for django
 django-filter
